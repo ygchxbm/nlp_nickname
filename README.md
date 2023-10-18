@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # xui-tool
 
 ## Project setup
@@ -34,3 +35,6 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 https://github.com/electron-vite/electron-vite-vue
+=======
+昵称生成
+>>>>>>> e64e6d8b61d9d0630fe7765454d6761db0e4e8d0
