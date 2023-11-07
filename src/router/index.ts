@@ -19,7 +19,7 @@ export const router = createRouter({
 NProgress.configure({ showSpinner: false });
 
 const store = useUserInfo(pinia);
-const whiteList = ["/401", "403", "404"];
+const whiteList = ["/401", "403", "404","/","/home","/release-evaluation/index","/preview-evaluation/index"];
 
 router.beforeEach(async (to, from, next) => {
 	NProgress.start();

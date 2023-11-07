@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-logo">
-		<img :src="logo" class="avatar" />
-		<div>和平安全监控平台</div>
+		<img :src="logo" class="avatar" alt="昵称生成平台"/>
+		<div>昵称生成平台</div>
 	</div>
 </template>
 
@@ -11,7 +11,8 @@ import { useUserInfo } from '@/stores/userInfo';
 import { storeToRefs } from 'pinia';
 import { ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router';
-import logo from '@/assets/logo.png';
+// import logo from '@/assets/logo.images';
+import logo from '/public/favicon.ico';
 
 export default defineComponent({
 	name: 'layoutLogo',
@@ -35,16 +36,20 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .layout-logo {
-	width: 230px;
-	height: 218px;
+	//width: 230px;
+	//height: 218px;
+  margin-top: 20px;
 	font-size: 20px;
 	color: #FFFFFF;
 	animation: logoAnimation 0.3s ease-in-out;
 	text-align: center;
-	padding-top: 50px;
+	//padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 	.avatar {
-		width: 80px;
-		height: 80px;
+		width: 60px;
+		height: 60px;
 		border-radius: 50%;
 		margin-bottom: 10px;
 		object-fit: cover;

@@ -97,3 +97,10 @@ export default defineComponent({
 	},
 });
 </script>
+<style scoped>
+.el-main{
+  height: 100%;
+  padding: 0;
+  border: 0;
+}
+</style>

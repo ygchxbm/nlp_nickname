@@ -44,9 +44,9 @@ const config: Record<number, Record<number, MapConfg>> = {
     '30132': mapIgame,
     // XGAME
     '30178': {
-        '1': { name: '城区', path: 'xgame/xgame5_5.png', width: 500000, height: 500000, startX: 201600, startY: -927200 },
-        //'2': { name: '新大陆', path: 'xgame/new_land.png', width: 800000, height: 800000, startX: 0, startY: -800000 },
-        '2': { name: '新大陆', path: 'xgame/new_land.png', width: 800000, height:  800000, startX: 0, startY: -800000 },
+        '1': { name: '城区', path: 'xgame/xgame5_5.images', width: 500000, height: 500000, startX: 201600, startY: -927200 },
+        //'2': { name: '新大陆', path: 'xgame/new_land.images', width: 800000, height: 800000, startX: 0, startY: -800000 },
+        '2': { name: '新大陆', path: 'xgame/new_land.images', width: 800000, height:  800000, startX: 0, startY: -800000 },
         //{ name: '新大陆', path: ？, width: 806400, height: 806400, startX: 806400, startY: -806400]
         '3': { name: '炼油厂', path: 'xgame/lyc.jpg', width: 64000, height: 64000, startX: 2052, startY: 14715 },
         '4': { name: '落日之城', path: 'xgame/lyzc.jpg', width: 24000, height: 24000, startX: 21972, startY: 33532 },
@@ -59,14 +59,14 @@ const config: Record<number, Record<number, MapConfg>> = {
     },
     // iGame Lite
     '30164': {
-        '7': { name: '热情雨林', path: 'igameLite/Savage_Minimap.png', width: 400000, height: 400000 },
+        '7': { name: '热情雨林', path: 'igameLite/Savage_Minimap.images', width: 400000, height: 400000 },
         '1': { name: '绝地海岛', path: 'igameLite/Rcity_miniMap.BMP', width: 200000, height: 200000 },
         '11': { name: '重火力', path: 'igameLite/map-heavy.jpg', width: 200000, height: 200000 },
     },
     // AGame
     '30190': {
-        '7': { name: '默认地图', path: 'agame/desertlands.png', width: 228850, height: 228850, startX: -114425, startY: -114425, revertX: true, revertY: true, 'offsetX': 0.5, 'offsetY': 0.5 },
-        '8': { name: '地图2', path: 'agame/map2.png', width: 189990, height: 189970, startX: -85890, startY: -103730, revertX: true, revertY: true, 'offsetX': 0.5, 'offsetY': 0.5 },
+        '7': { name: '默认地图', path: 'agame/desertlands.images', width: 228850, height: 228850, startX: -114425, startY: -114425, revertX: true, revertY: true, 'offsetX': 0.5, 'offsetY': 0.5 },
+        '8': { name: '地图2', path: 'agame/map2.images', width: 189990, height: 189970, startX: -85890, startY: -103730, revertX: true, revertY: true, 'offsetX': 0.5, 'offsetY': 0.5 },
     },
     // ESGame
     '30198': {
@@ -82,17 +82,17 @@ const config: Record<number, Record<number, MapConfg>> = {
     },
     // HGame
     '30193': {
-        '1': { name: '大地图', path: 'hgame/Terrain.png', width: 8100, height: 8100, startX: 0, startY: 0 },
+        '1': { name: '大地图', path: 'hgame/Terrain.images', width: 8100, height: 8100, startX: 0, startY: 0 },
     },
     // CodeV
     '30201': {
-        '1': { name: 'Ascent', path: 'codev/UI_Map_Image_Ascent.png', width: 14300, height: 14300, startX: 0, startY: 0, revertY: true },
-        '2': { name: 'Bind', path: 'codev/UI_Map_Image_Bind.png', width: 16900, height: 16900, startX: 0, startY: 0, revertY: true },
-        '3': { name: 'Haven', path: 'codev/UI_Map_Image_Haven.png', width: 13097, height: 12919, startX: 0, startY: 0, revertY: true },
-        '4': { name: 'Icebox', path: 'codev/UI_Map_Image_Icebox.png', width: 14200, height: 14200, startX: 0, startY: 0, revertY: true },
-        '5': { name: 'Split', path: 'codev/UI_Map_Image_Split.png', width: 13200, height: 13200, startX: 0, startY: 0, revertY: true },
-        '6': { name: 'Breeze', path: 'codev/UI_Map_Image_Breeze.png', width: 14050, height: 14050, startX: 0, startY: 0, revertY: true },
-        '7': { name: 'Fracture', path: 'codev/UI_Map_Image_FRACTURE.png', width: 12100, height: 12100, startX: 0, startY: 0, revertY: true },
+        '1': { name: 'Ascent', path: 'codev/UI_Map_Image_Ascent.images', width: 14300, height: 14300, startX: 0, startY: 0, revertY: true },
+        '2': { name: 'Bind', path: 'codev/UI_Map_Image_Bind.images', width: 16900, height: 16900, startX: 0, startY: 0, revertY: true },
+        '3': { name: 'Haven', path: 'codev/UI_Map_Image_Haven.images', width: 13097, height: 12919, startX: 0, startY: 0, revertY: true },
+        '4': { name: 'Icebox', path: 'codev/UI_Map_Image_Icebox.images', width: 14200, height: 14200, startX: 0, startY: 0, revertY: true },
+        '5': { name: 'Split', path: 'codev/UI_Map_Image_Split.images', width: 13200, height: 13200, startX: 0, startY: 0, revertY: true },
+        '6': { name: 'Breeze', path: 'codev/UI_Map_Image_Breeze.images', width: 14050, height: 14050, startX: 0, startY: 0, revertY: true },
+        '7': { name: 'Fracture', path: 'codev/UI_Map_Image_FRACTURE.images', width: 12100, height: 12100, startX: 0, startY: 0, revertY: true },
     },
     // Origin
     '30215': {
@@ -100,8 +100,8 @@ const config: Record<number, Record<number, MapConfg>> = {
     },
     // Ugame
     '30213': {
-        '1': { name: '默认地图', path: 'ugame/default.png', width: 30000, height: 30000, startX: 34310, startY: 31640 },
-        '2': { name: 'Map_ROC_Test', path: 'ugame/Map_ROC_Test.png', width: 28395, height: 19025, startX: 56065 , startY: -66190 },
+        '1': { name: '默认地图', path: 'ugame/default.images', width: 30000, height: 30000, startX: 34310, startY: 31640 },
+        '2': { name: 'Map_ROC_Test', path: 'ugame/Map_ROC_Test.images', width: 28395, height: 19025, startX: 56065 , startY: -66190 },
     },
 };
 

@@ -75,6 +75,9 @@
 .el-menu--collapse {
 	width: 64px !important;
 }
+.el-menu-item:hover{
+	background: #404866;
+}
 // 外部链接时
 .el-menu-item a,
 .el-menu-item a:hover,

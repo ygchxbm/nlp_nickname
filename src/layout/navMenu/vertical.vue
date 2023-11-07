@@ -55,9 +55,12 @@ export default defineComponent({
 			defaultActive: route.meta.isDynamic ? route.meta.isDynamicPath : route.path,
 			isCollapse: false,
 		});
+    const blackList=['previewEvaluation']
+
 		// 获取父级菜单数据
 		const menuLists = computed(() => {
-			return <any>props.menuList;
+      console.log(props.menuList)
+			return <any>props.menuList.filter((item: any)=>{return !blackList.includes(item.name)});
 		});
 		// 获取布局配置信息
 		const getThemeConfig = computed(() => {

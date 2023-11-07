@@ -57,7 +57,11 @@ export default defineComponent({
 			window.removeEventListener('resize', onLayoutResize);
 		});
 		// 监听路由的变化
-		watch(() => route.path, () => proxy.$refs.layoutDefaultsScrollbarRef.wrap$.scrollTop = 0);
+		watch(() => route.path, () => {
+      // proxy.$refs.layoutDefaultsScrollbarRef.wrap$.scrollTop = 0
+      proxy.$refs.layoutDefaultsScrollbarRef.scrollTop = 0
+    });
+
 		return {
 			isFixedHeader,
 		};
