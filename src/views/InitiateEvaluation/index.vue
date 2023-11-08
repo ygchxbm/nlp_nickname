@@ -3,6 +3,8 @@ import axios from "axios";
 import {ref, reactive, computed} from 'vue';
 import {Upload} from '@element-plus/icons-vue';
 import {useRouter, useRoute} from 'vue-router';
+import { useQuestionnaire }from '@/stores/questionnaire'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
@@ -58,15 +60,21 @@ function onSubmit() {
       .then(res => {
         ({aiNames, realNames} = res.data);
         nameGroups.value = groupNames(realNames, aiNames, 200, form.oneGroupNameNum);
-        const id=getUuid();
-        console.log(id);
         if (nameGroups.value.length > 0) {
-          // isCreatedEvaluation.value = true
+          const id=getUuid();
+          const { questionnaires } = storeToRefs(useQuestionnaire())
+          Reflect.set(questionnaires.value,id,{
+            info:{
+              title: form.title||'默认标题',
+              nowFormatDate: nowFormatDate.value,
+            },
+            value:nameGroups
+          })
           router.push({
-            // path: '/preview-evaluation/index',
             name: "previewEvaluation",
+            // name: "choiceQuestion",
             state: {
-              title: form.title,
+              title: form.title||'默认标题',
               nowFormatDate: nowFormatDate.value,
               nameGroups: JSON.stringify(nameGroups.value)
             }
@@ -200,7 +208,7 @@ function getUuid () {
           <div class="main">
             <div class="content">
               <div class="tips">请选出你认为是真实人名的那一组</div>
-              <ul class="questionnaire">
+              <ul class="options">
                 <li v-for="(group,groupIndex) in nameGroups">
                   <ul>
                     <li class="option-base" v-for="(option,name,optionIndex) in group"
@@ -430,7 +438,7 @@ function getUuid () {
             line-height: 28px;
           }
 
-          .questionnaire {
+          .options {
             min-width: 800px;
             background: #ffffff;
             margin-bottom: 50px;
