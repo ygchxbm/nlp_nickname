@@ -1,56 +1,36 @@
 <script setup>
-import shareIcon from '@/assets/images/share.png';
-import deleteIcon from '@/assets/images/delete.png';
+import {useRouter} from 'vue-router';
+import {storeToRefs} from "pinia";
+import {useQuestionnaire} from "@/stores/questionnaire";
 
-const handleClick = () => {
-  console.log('click')
+const router = useRouter()
+const {questionnaires} = storeToRefs(useQuestionnaire());
+
+
+function responseEvaluation(row, column) {
+  if (column.label === "评测标题") {
+    router.push({
+      name: "choiceQuestion",
+      state: {
+        title: row.info.title,
+        nowFormatDate: row.info.nowFormatDate,
+        nameGroups: JSON.stringify(row.value)
+      }
+    })
+  }
 }
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-]
+const handleClick = () => {
+  console.log(document.URL)
+}
+
 </script>
 <template>
   <div class="home">
     <div class="content">
-      <el-table :data="tableData" border style="width: 1082px">
-        <el-table-column :resizable="false" prop="date" label="评测标题" width="680" style="background:#00000099;"/>
-        <el-table-column :resizable="false" prop="name" label="创建时间" width="200"/>
+      <el-table @cell-click="responseEvaluation" :data="Object.values(questionnaires)" border style="width: 1082px">
+        <el-table-column :resizable="false" prop="info.title" label="评测标题" width="680" style="background:#00000099;"/>
+        <el-table-column :resizable="false" prop="info.nowFormatDate" label="创建时间" width="200"/>
         <el-table-column :resizable="false" label="操作" width="200">
           <template #default>
             <el-button link size="small" @click="handleClick">
@@ -76,6 +56,7 @@ const tableData = [
     :deep(.el-table__inner-wrapper) {
       border: 1px solid #e6e5e5;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     :deep(.el-table__row):hover td {
@@ -98,11 +79,11 @@ const tableData = [
       font-weight: 400;
     }
 
-    :deep(.el-table__row) .el-table_1_column_1 .cell {
+    :deep(.el-table__row) :first-child .cell {
       cursor: pointer;
     }
 
-    :deep(.el-table__row) .el-table_1_column_1 .cell:hover {
+    :deep(.el-table__row) :first-child .cell:hover {
       color: #00A9CEFF;
     }
 
@@ -117,58 +98,60 @@ const tableData = [
     :deep(.el-table__row) .el-table_1_column_3 {
       .el-button {
       //display: flex; //align-items: center;
-
-        .btn-span {
-          margin: 0 20px;
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 24px;
-        }
-
-        .btn-share {
-          &:before {
-            content: "";
-            position: absolute;
-            top: 20px;
-            left: 24px;
-            width: 16px;
-            height: 16px;
-            background: url(../../assets/images/share.png) no-repeat;
-            background-size: 75% 75%;
-          }
-        }
-
-        .btn-share:hover {
-          color: #00A9CEFF;
-          &:before {
-            background: url(../../assets/images/shareHover.png) no-repeat;
-            background-size: 75% 75%;
-          }
-        }
-
-        .btn-delete {
-          &:before {
-            content: "";
-            position: absolute;
-            top: 20px;
-            left: 109px;
-            width: 16px;
-            height: 16px;
-            background: url(../../assets/images/delete.png) no-repeat;
-            background-size: 75% 75%;
-          }
-        }
-        .btn-delete:hover {
-          color: #E34D59E6;
-          &:before {
-            background: url(../../assets/images/deleteHover.png) no-repeat;
-            background-size: 75% 75%;
-          }
-        }
-
       }
     }
 
+  }
+}
+
+.btn-span {
+  margin: 0 20px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.btn-share {
+  &:before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    width: 16px;
+    height: 16px;
+    background: url(../../assets/images/share.png) no-repeat;
+    background-size: 75% 75%;
+  }
+}
+
+.btn-share:hover {
+  color: #00A9CEFF;
+
+  &:before {
+    background: url(../../assets/images/shareHover.png) no-repeat;
+    background-size: 75% 75%;
+  }
+}
+
+.btn-delete {
+  &:before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 109px;
+    width: 16px;
+    height: 16px;
+    background: url(../../assets/images/delete.png) no-repeat;
+    background-size: 75% 75%;
+  }
+}
+
+.btn-delete:hover {
+  color: #E34D59E6;
+
+  &:before {
+    background: url(../../assets/images/deleteHover.png) no-repeat;
+    background-size: 75% 75%;
   }
 }
 </style>
