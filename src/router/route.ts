@@ -30,7 +30,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/home',
-				name: 'Index',
+				name: 'home',
 				component: () => import('@/views/home/index.vue'),
 				meta: {
 					title: '首页',
@@ -40,8 +40,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/release-evaluation/index',
-				name: 'releaseEvaluation',
-				component: () => import('@/views/releaseEvaluation/index.vue'),
+				name: 'InitiateEvaluation',
+				component: () => import('@/views/InitiateEvaluation/index.vue'),
 				meta: {
 					title: '发起评测',
 					roles: ['admin'],
@@ -58,10 +58,20 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 					icon: 'menu-trend',
 				},
 			},
+			{
+				path: '/response-evaluation/choiceQuestion',
+				name: 'choiceQuestion',
+				component: () => import('@/views/responseEvaluation/ChoiceQuestion.vue'),
+				meta: {
+					title: '作答评测-选择题',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
 			// {
 			// 	path: '/x-strategy/index',
 			// 	name: 'XStrategy',
-			// 	component: () => import('@/views/heatmap/index.vue'),
+			// 	component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
 			// 	meta: {
 			// 		title: '技术中心策略监控',
 			// 		roles: ['admin'],
@@ -71,7 +81,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			// {
 			// 	path: '/strategy-intersection/index',
 			// 	name: 'StrategyIntersection',
-			// 	component: () => import('@/views/heatmap/index.vue'),
+			// 	component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
 			// 	meta: {
 			// 		title: '策略交集',
 			// 		roles: ['admin'],
@@ -81,7 +91,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			// 		{
 			// 			path: '/strategy-intersection/rule',
 			// 			name: 'StrategyIntersection',
-			// 			component: () => import('@/views/heatmap/index.vue'),
+			// 			component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
 			// 			meta: {
 			// 				title: '上报与安全处罚交集',
 			// 			},
