@@ -154,15 +154,13 @@ function getGroupNamesForTQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
     }
     result.push({
       names,
-      isRealName:2,
+      isRealName,
       option: {
         true: {
           value: '正确',
-          isSelected: false
         },
         false: {
           value: '错误',
-          isSelected: false
         }
       }
     });
