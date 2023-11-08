@@ -55,11 +55,12 @@ export default defineComponent({
 			defaultActive: route.meta.isDynamic ? route.meta.isDynamicPath : route.path,
 			isCollapse: false,
 		});
-    const blackList=['previewEvaluation']
+    //黑名单，路由不显示在侧边栏
+    const blackList=['previewEvaluation','choiceQuestion']
 
 		// 获取父级菜单数据
 		const menuLists = computed(() => {
-      console.log(props.menuList)
+      // console.log(props.menuList)
 			return <any>props.menuList.filter((item: any)=>{return !blackList.includes(item.name)});
 		});
 		// 获取布局配置信息
