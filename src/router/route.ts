@@ -68,6 +68,16 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 					icon: 'menu-trend',
 				},
 			},
+			{
+				path: '/response-evaluation/trueOrFalseQuestions',
+				name: 'trueOrFalseQuestions',
+				component: () => import('@/views/responseEvaluation/TrueOrFalseQuestions.vue'),
+				meta: {
+					title: '作答评测-判断题',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
 			// {
 			// 	path: '/x-strategy/index',
 			// 	name: 'XStrategy',

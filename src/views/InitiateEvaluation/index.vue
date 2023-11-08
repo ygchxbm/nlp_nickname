@@ -3,8 +3,8 @@ import axios from "axios";
 import {ref, reactive, computed} from 'vue';
 import {Upload} from '@element-plus/icons-vue';
 import {useRouter, useRoute} from 'vue-router';
-import { useQuestionnaire }from '@/stores/questionnaire'
-import { storeToRefs } from 'pinia'
+import {useQuestionnaire} from '@/stores/questionnaire'
+import {storeToRefs} from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
@@ -50,31 +50,43 @@ function onlyNumber(value) {
 }
 
 function onSubmit() {
+  const allNamesNum = form.questionNum * form.oneGroupNameNum
   const url = 'http://127.0.0.1:3000';
   const params = new URLSearchParams();
   params.append('language', form.language);
   params.append('nameStyle', form.nameStyle);
-  params.append('namesNumber', (form.questionNum * form.oneGroupNameNum).toString());
-  params.append('referenceNames', []);
+  params.append('namesNumber', allNamesNum.toString());
+  params.append('referenceNames', [].toString());
   axios.post(url + '/getNames', params)
       .then(res => {
         ({aiNames, realNames} = res.data);
-        nameGroups.value = groupNames(realNames, aiNames, 200, form.oneGroupNameNum);
+        const questionType = form.questionType;
+        const pathNameMap = {
+          "选择题": "previewEvaluation",
+          "判断题": "trueOrFalseQuestions"
+        }
+        if (form.questionType === "选择题") {
+          nameGroups.value = getGroupNamesForCQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
+        } else if (form.questionType === "判断题") {
+          nameGroups.value = getGroupNamesForTQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
+        }
         if (nameGroups.value.length > 0) {
-          const id=getUuid();
-          const { questionnaires } = storeToRefs(useQuestionnaire())
-          Reflect.set(questionnaires.value,id,{
-            info:{
-              title: form.title||'默认标题',
+          const id = getUuid();
+          const {questionnaires} = storeToRefs(useQuestionnaire());
+          const title = form.title || '默认标题';
+          questionnaires.value[id] = {
+            info: {
+              title,
               nowFormatDate: nowFormatDate.value,
             },
-            value:nameGroups
-          })
+            value: nameGroups
+          }
+
+          const pathName = Reflect.get(pathNameMap, questionType);
           router.push({
-            name: "previewEvaluation",
-            // name: "choiceQuestion",
+            name: pathName,
             state: {
-              title: form.title||'默认标题',
+              title,
               nowFormatDate: nowFormatDate.value,
               nameGroups: JSON.stringify(nameGroups.value)
             }
@@ -83,7 +95,9 @@ function onSubmit() {
       })
 }
 
-function groupNames(realNames, aiNames, allNamesNum, oneGroupNameNum) {
+
+function getGroupNamesForCQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
+  console.info("oneGroupNameNum:", oneGroupNameNum, "----- 🚀 ~ filePath:src\views\InitiateEvaluation\index.vue method:getGroupNamesForCQ")
   const result = [];
   let i = 0;
   while (i < allNamesNum) {
@@ -119,7 +133,57 @@ function groupNames(realNames, aiNames, allNamesNum, oneGroupNameNum) {
   return result;
 }
 
-function getUuid () {
+function getGroupNamesForTQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
+  console.info("oneGroupNameNum:", oneGroupNameNum, "----- 🚀 ~ filePath:src\views\InitiateEvaluation\index.vue method:getGroupNamesForCQ")
+
+  const result = [];
+  const groupNum = allNamesNum / oneGroupNameNum;
+  let i = 0, n = 0, m = 0;
+  while (i < groupNum) {
+    const randNumber = Math.random();
+    let names;
+    let isRealName;
+    if (randNumber < 0.5) {
+      names = realNames.slice(n * oneGroupNameNum, (n + 1) * oneGroupNameNum);
+      n++;
+      isRealName = true;
+    } else {
+      names = aiNames.slice(m * oneGroupNameNum, (m + 1) * oneGroupNameNum);
+      m++;
+      isRealName = false;
+    }
+    result.push({
+      names,
+      isRealName:2,
+      option: {
+        true: {
+          value: '正确',
+          isSelected: false
+        },
+        false: {
+          value: '错误',
+          isSelected: false
+        }
+      }
+    });
+    i++
+  }
+  return result
+}
+
+function openFile() {
+
+}
+
+function questionTypeChange(type) {
+  if (type === "判断题") {
+    form.oneGroupNameNum = 1;
+  } else if (type === "选择题") {
+    form.oneGroupNameNum = 5;
+  }
+}
+
+function getUuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0
     const v = c === 'x' ? r : (r & 0x3 | 0x8)
@@ -163,7 +227,7 @@ function getUuid () {
           </el-form-item>
           <el-form-item label="题目类型">
             <el-radio-group v-model="form.questionType">
-              <el-radio v-for="item in questionTypes" :key="item" :label="item" :value="item">
+              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type">
               </el-radio>
             </el-radio-group>
           </el-form-item>

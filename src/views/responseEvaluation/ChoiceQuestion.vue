@@ -18,7 +18,6 @@ let config = {
 let selectedObj = ref({});
 
 const nameGroupsLength = nameGroups.length;
-console.log(nameGroupsLength)
 let accuracy = 0;
 
 
@@ -59,9 +58,9 @@ function submitQuestionnaire() {
   <div class="preview">
     <div class="preview-main">
       <div class="preview-content">
-        <div class="progress">
-          <el-progress stroke-width=6 color="#00A9CEFF" stroke-linecap="butt" :percentage="(Object.values(selectedObj).length/nameGroups.length)*100" text-inside="text-inside"/>
-          <div class="progressNum"><span>{{ `${Object.values(selectedObj).length}/${nameGroups.length}` }}</span></div>
+        <div class="main">
+          <el-progress stroke-width:6 color="#00A9CEFF" stroke-linecap="butt" :percentage="(Object.values(selectedObj).length/nameGroups.length)*100" text-inside="text-inside"/>
+          <div class="progress-num"><span>{{ `${Object.values(selectedObj).length}/${nameGroups.length}` }}</span></div>
         </div>
         <div class="questionnaire">
           <div class="header">
@@ -119,7 +118,7 @@ function submitQuestionnaire() {
       height: 100%;
       background: #FFFFFF;
 
-      .progress {
+      .main {
         width: 880px;
         margin: 10px auto 0;
 
@@ -133,7 +132,7 @@ function submitQuestionnaire() {
           }
         }
 
-        .progressNum {
+        .progress-num {
           display: flex;
           justify-content: end;
 

@@ -56,7 +56,7 @@ export default defineComponent({
 			isCollapse: false,
 		});
     //黑名单，路由不显示在侧边栏
-    const blackList=['previewEvaluation','choiceQuestion']
+    const blackList=['previewEvaluation','choiceQuestion','trueOrFalseQuestions']
 
 		// 获取父级菜单数据
 		const menuLists = computed(() => {

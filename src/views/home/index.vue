@@ -2,12 +2,17 @@
 import {useRouter} from 'vue-router';
 import {storeToRefs} from "pinia";
 import {useQuestionnaire} from "@/stores/questionnaire";
+import {ref,computed} from "vue";
 
 const router = useRouter()
 const {questionnaires} = storeToRefs(useQuestionnaire());
 
+const questionnairesArr=computed(()=>{
+  return Object.values(questionnaires.value)
+})
 
-function responseEvaluation(row, column) {
+let isRemove=false
+function responseEvaluation(row, column,c,d) {
   if (column.label === "评测标题") {
     router.push({
       name: "choiceQuestion",
@@ -17,25 +22,38 @@ function responseEvaluation(row, column) {
         nameGroups: JSON.stringify(row.value)
       }
     })
+  }else if(isRemove){
+    let removeKey
+    for (const key in questionnaires.value) {
+      if(Reflect.get(questionnaires.value,key)===row){
+        removeKey=key;
+        break;
+      }
+    }
+    Reflect.deleteProperty(questionnaires.value,removeKey);
   }
 }
 
-const handleClick = () => {
+function share(){
   console.log(document.URL)
 }
+function remove(){
+  isRemove=true;
+}
+
 
 </script>
 <template>
   <div class="home">
     <div class="content">
-      <el-table @cell-click="responseEvaluation" :data="Object.values(questionnaires)" border style="width: 1082px">
+      <el-table @cell-click="responseEvaluation" :data="questionnairesArr" border style="width: 1082px">
         <el-table-column :resizable="false" prop="info.title" label="评测标题" width="680" style="background:#00000099;"/>
         <el-table-column :resizable="false" prop="info.nowFormatDate" label="创建时间" width="200"/>
         <el-table-column :resizable="false" label="操作" width="200">
           <template #default>
-            <el-button link size="small" @click="handleClick">
+            <el-button link size="small" @click="share">
               <span class="btn-span btn-share">分享</span></el-button>
-            <el-button link size="small">
+            <el-button link size="small" @click="remove">
               <span class="btn-span btn-delete">删除</span></el-button>
           </template>
         </el-table-column>
