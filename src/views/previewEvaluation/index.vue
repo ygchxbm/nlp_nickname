@@ -1,14 +1,17 @@
 <script setup>
-import {ref} from "vue";
 const historyParam = history.state;
-const title = historyParam.title || '默认标题';
+const title = historyParam.title;
 const nowFormatDate = historyParam.nowFormatDate;
 const nameGroups = JSON.parse(historyParam.nameGroups);
 import {useRouter} from 'vue-router'
 const router = useRouter()
 
 function lastStep(){
-  router.push({name: "releaseEvaluation",})
+  router.push({name: "InitiateEvaluation",})
+}
+
+function shareEvaluation(){
+  console.log(document.URL)
 }
 </script>
 <template>
@@ -23,7 +26,7 @@ function lastStep(){
         <div class="main">
           <div class="content">
             <div class="tips">请选出你认为是真实人名的那一组</div>
-            <ul class="questionnaire">
+            <ul class="options">
               <li v-for="(group) in nameGroups">
                 <ul>
                   <li class="option-base" v-for="(option,name,optionIndex) in group">
@@ -38,7 +41,7 @@ function lastStep(){
       </div>
       <div class="btnS">
         <el-button plain @click="lastStep">上一步</el-button>
-        <el-button class="shareBtn" type="primary">分享评测</el-button>
+        <el-button @click="shareEvaluation" class="shareBtn" type="primary">分享评测</el-button>
       </div>
     </div>
   </div>
@@ -46,12 +49,15 @@ function lastStep(){
 <style lang="scss" scoped>
 .preview {
   height: 100vh;
+  overflow: hidden;
 
   .preview-title {
-    align-items: center;
+    display: flex;
+    justify-content: center;
     background: #DEF4F9FF;
 
     span {
+      margin-right: 110px;
       color: #00A9CEFF;
       font-size: 14px;
       font-weight: 400;
@@ -113,7 +119,7 @@ function lastStep(){
           line-height: 28px;
         }
 
-        .questionnaire {
+        .options {
           min-width: 800px;
           background: #ffffff;
           margin-bottom: 50px;
