@@ -1,14 +1,14 @@
 <script setup>
 defineProps({
-  count: Number,
-  number: Number
+  doneOptionNum: Number,
+  allOptionNum: Number
 })
 
 </script>
 <template>
   <div class="progress-main">
-    <el-progress stroke-width:6 color="#00A9CEFF" stroke-linecap="butt" :percentage="(count/number)*100" text-inside="text-inside"/>
-    <div class="progress-num"><span>{{ `${count}/${number}` }}</span></div>
+    <el-progress stroke-width:6 color="#00A9CEFF" stroke-linecap="butt" :percentage="(doneOptionNum/allOptionNum)*100" text-inside="text-inside"/>
+    <div class="progress-num"><span>{{ `${doneOptionNum}/${allOptionNum}` }}</span></div>
   </div>
 </template>
 <style lang="scss" scoped>
