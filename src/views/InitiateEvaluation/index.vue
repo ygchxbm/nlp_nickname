@@ -61,30 +61,40 @@ function onSubmit() {
       .then(res => {
         ({aiNames, realNames} = res.data);
         const questionType = form.questionType;
-        const pathNameMap = {
+        const previewPathNameMap = {
           "选择题": "previewEvaluation",
-          "判断题": "trueOrFalseQuestions"
+          "判断题": "previewTrueOrFalseQuestions",
+          "长文本对比": "previewLongTextQuestions"
+        }
+        const responsePathNameMap = {
+          "选择题": "choiceQuestion",
+          "判断题": "responseTrueOrFalseQuestions",
+          "长文本对比": "responseLongTextQuestions"
         }
         if (form.questionType === "选择题") {
           nameGroups.value = getGroupNamesForCQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
         } else if (form.questionType === "判断题") {
           nameGroups.value = getGroupNamesForTQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
+        } else if (form.questionType === "长文本对比") {
+          nameGroups.value = getGroupNamesForCQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
         }
         if (nameGroups.value.length > 0) {
           const id = getUuid();
           const {questionnaires} = storeToRefs(useQuestionnaire());
           const title = form.title || '默认标题';
+          const responsePathName = Reflect.get(responsePathNameMap, questionType);
           questionnaires.value[id] = {
             info: {
               title,
               nowFormatDate: nowFormatDate.value,
             },
-            value: nameGroups
+            value: nameGroups,
+            pathName: responsePathName,
           }
 
-          const pathName = Reflect.get(pathNameMap, questionType);
+          const previewPathName = Reflect.get(previewPathNameMap, questionType);
           router.push({
-            name: pathName,
+            name: previewPathName,
             state: {
               title,
               nowFormatDate: nowFormatDate.value,
@@ -97,7 +107,6 @@ function onSubmit() {
 
 
 function getGroupNamesForCQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
-  console.info("oneGroupNameNum:", oneGroupNameNum, "----- 🚀 ~ filePath:src\views\InitiateEvaluation\index.vue method:getGroupNamesForCQ")
   const result = [];
   let i = 0;
   while (i < allNamesNum) {
@@ -134,8 +143,6 @@ function getGroupNamesForCQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
 }
 
 function getGroupNamesForTQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
-  console.info("oneGroupNameNum:", oneGroupNameNum, "----- 🚀 ~ filePath:src\views\InitiateEvaluation\index.vue method:getGroupNamesForCQ")
-
   const result = [];
   const groupNum = allNamesNum / oneGroupNameNum;
   let i = 0, n = 0, m = 0;
@@ -224,8 +231,8 @@ function getUuid() {
             </el-select>
           </el-form-item>
           <el-form-item label="题目类型">
-            <el-radio-group v-model="form.questionType">
-              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type">
+            <el-radio-group v-model="form.questionType" text-color="#48a8d1">
+              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type" >
               </el-radio>
             </el-radio-group>
           </el-form-item>
@@ -330,6 +337,20 @@ function getUuid() {
           margin-bottom: 24px;
           display: flex;
           align-items: center;
+
+          :deep(.el-form-item__content ){
+            .el-radio-group{
+              .el-radio{
+                .el-radio__input.is-checked .el-radio__inner{
+                  border-color: #48a8d1;
+                  background:#48a8d1;
+                }
+                .el-radio__input.is-checked+.el-radio__label{
+                  color: #000000;
+                }
+              }
+            }
+          }
 
 
           :deep(.el-form-item__label) {
