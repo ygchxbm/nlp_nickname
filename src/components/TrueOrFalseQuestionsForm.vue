@@ -1,15 +1,35 @@
 <script setup>
-import {ref} from "vue";
+import {ref, defineEmits} from "vue";
+import {ElMessageBox} from "element-plus";
 
-defineProps({
+let accuracy = ref(-1);
+let isFinishedAnswer = false
+
+const props = defineProps({
   title: String,
   time: String,
-  nameGroups: Object
+  nameGroups: Object,
+  isPreview: Boolean
 })
 
 const selectedOptions = ref({});
+const emit = defineEmits(['selectedOption']);
 
 function submitQuestionnaire() {
+  if (isFinishedAnswer) {
+    console.log(accuracy)
+  } else {
+    ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
+      // autofocus: false,
+      confirmButtonText: 'OK',
+      // callback: (action) => {
+      //   ElMessage({
+      //     type: 'info',
+      //     message: `action: ${action}`,
+      //   })
+      // },
+    })
+  }
 }
 
 function selectedOption(group, index, key) {
@@ -17,6 +37,16 @@ function selectedOption(group, index, key) {
     isRealName: group.isRealName,
     selectedValue: key,
   })
+  emit('selectedOption', selectedOptions);
+
+  let doneOptionNum = Object.values(selectedOptions.value).length;
+  if (doneOptionNum === props.nameGroups.length) {
+    isFinishedAnswer = true;
+    const trueOptionNum = Object.values(selectedOptions.value).filter(item => {
+      return item.isRealName.toString() === item.selectedValue
+    }).length;
+    accuracy = parseFloat(((trueOptionNum / props.nameGroups.length).toFixed(4)))
+  }
 }
 
 </script>
@@ -27,8 +57,8 @@ function selectedOption(group, index, key) {
         <div class="eFFCq-title">{{ title }}</div>
         <div class="eFFCq-time">{{ time }}</div>
         <div class="eFFCq-tips-commit">
-          <div class="eFFCq-tips">请选出你认为是真实人名的那一组</div>
-          <el-button class="eFFCq-commit" type="primary" @click="submitQuestionnaire">提交答案</el-button>
+          <div class="eFFCq-tips">请判断下面每组人名是否是真实人名</div>
+          <el-button v-if="!isPreview" class="eFFCq-commit" type="primary" @click="submitQuestionnaire">提交答案</el-button>
         </div>
       </div>
       <div class="eFFCq-form-main">
@@ -41,9 +71,10 @@ function selectedOption(group, index, key) {
             <div class="eFFCq-option-radios">
               <div v-for="(item,key) in group.option"
                    @click="selectedOption(group,index,key)"
+                   class="eFFCq-option-radio-base"
                    :class="[{
-                     'eFFCq-option-radio':selectedOptions[index]?.selectedValue!==key||true},{
-                     'eFFCq-option-radio-selected':selectedOptions[index]?.selectedValue===key}]">
+                     'eFFCq-option-radio':(selectedOptions[index]?.selectedValue!==key||true)&&!isPreview},{
+                     'eFFCq-option-radio-selected':(selectedOptions[index]?.selectedValue===key)&&!isPreview}]">
                 <div class="eFFCq-radio-icon">
                   <div class="eFFCq-radio-icon-child"></div>
                 </div>
@@ -54,6 +85,9 @@ function selectedOption(group, index, key) {
             </div>
           </li>
         </ul>
+      </div>
+      <div class="eFFCq-form-footer">
+        <el-button v-if="!isPreview" class="commit-Btn" type="primary" @click="submitQuestionnaire">提交答案</el-button>
       </div>
     </div>
   </div>
@@ -72,6 +106,7 @@ function selectedOption(group, index, key) {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 20px;
 
       .eFFCq-title {
         margin-bottom: 4px;
@@ -94,6 +129,7 @@ function selectedOption(group, index, key) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 12px;
 
         .eFFCq-tips {
           color: #00A9CEFF;
@@ -120,6 +156,8 @@ function selectedOption(group, index, key) {
       border-top: 1px solid #EBEBEBFF;
 
       .eFFCq-ul {
+        padding-bottom: 40px;
+
         .eFFCq-option {
           width: 800px;
           height: 118px;
@@ -147,10 +185,9 @@ function selectedOption(group, index, key) {
             flex-direction: column;
             align-items: flex-start;
 
-            .eFFCq-option-radio {
+            .eFFCq-option-radio-base {
               width: 100%;
               height: 40px;
-              cursor: pointer;
               display: flex;
               align-items: center;
               margin-top: 1px;
@@ -168,6 +205,10 @@ function selectedOption(group, index, key) {
                 line-height: 40px;
                 //text-align: center;
               }
+            }
+
+            .eFFCq-option-radio{
+              cursor: pointer;
             }
 
             .eFFCq-option-radio:hover {
@@ -210,11 +251,26 @@ function selectedOption(group, index, key) {
 
               .eFFCq-radio-label {
                 line-height: 40px;
-                //text-align: center;
               }
             }
           }
         }
+      }
+    }
+
+    .eFFCq-form-footer {
+      display: flex;
+      justify-content: center;
+
+      .commit-Btn {
+        width: 88px;
+        height: 32px;
+        background: #00A9CEFF;
+        color: #FFFFFFE6;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        margin-bottom: 60px;
       }
     }
 
