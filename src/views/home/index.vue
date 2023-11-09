@@ -12,10 +12,10 @@ const questionnairesArr=computed(()=>{
 })
 
 let isRemove=false
-function responseEvaluation(row, column,c,d) {
+function responseQuestions(row, column,c,d) {
   if (column.label === "评测标题") {
     router.push({
-      name: "choiceQuestion",
+      name:row.pathName,
       state: {
         title: row.info.title,
         nowFormatDate: row.info.nowFormatDate,
@@ -46,7 +46,7 @@ function remove(){
 <template>
   <div class="home">
     <div class="content">
-      <el-table @cell-click="responseEvaluation" :data="questionnairesArr" border style="width: 1082px">
+      <el-table @cell-click="responseQuestions" :data="questionnairesArr" border style="width: 1082px">
         <el-table-column :resizable="false" prop="info.title" label="评测标题" width="680" style="background:#00000099;"/>
         <el-table-column :resizable="false" prop="info.nowFormatDate" label="创建时间" width="200"/>
         <el-table-column :resizable="false" label="操作" width="200">
