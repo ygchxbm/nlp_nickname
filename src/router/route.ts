@@ -59,7 +59,27 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				},
 			},
 			{
-				path: '/response-evaluation/choiceQuestion',
+				path: '/preview-evaluation/trueOrFalseQuestions',
+				name: 'previewTrueOrFalseQuestions',
+				component: () => import('@/views/previewEvaluation/PreviewTrueOrFalseQuestions.vue'),
+				meta: {
+					title: '预览评测-判断题',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
+			{
+				path: '/preview-evaluation/longTextQuestions',
+				name: 'previewLongTextQuestions',
+				component: () => import('@/views/previewEvaluation/PreviewLongTextQuestions.vue'),
+				meta: {
+					title: '预览评测-长文本',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
+			{
+				path: '/response-evaluation/choiceQuestions',
 				name: 'choiceQuestion',
 				component: () => import('@/views/responseEvaluation/ChoiceQuestion.vue'),
 				meta: {
@@ -70,10 +90,20 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/response-evaluation/trueOrFalseQuestions',
-				name: 'trueOrFalseQuestions',
+				name: 'responseTrueOrFalseQuestions',
 				component: () => import('@/views/responseEvaluation/TrueOrFalseQuestions.vue'),
 				meta: {
 					title: '作答评测-判断题',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
+			{
+				path: '/response-evaluation/longTextQuestions',
+				name: 'responseLongTextQuestions',
+				component: () => import('@/views/responseEvaluation/LongTextQuestions.vue'),
+				meta: {
+					title: '作答评测-长文本',
 					roles: ['admin'],
 					icon: 'menu-trend',
 				},
