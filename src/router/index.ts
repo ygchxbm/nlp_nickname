@@ -20,8 +20,8 @@ NProgress.configure({showSpinner: false});
 
 const store = useUserInfo(pinia);
 const whiteList = ["/401", "403", "404", "/", "/home", "/release-evaluation/index",
-    "/preview-evaluation/index", "/preview-evaluation/trueOrFalseQuestions","/preview-evaluation/longTextQuestions",
-    "/response-evaluation/choiceQuestions", "/response-evaluation/trueOrFalseQuestions", "/response-evaluation/longTextQuestions"];
+    "/preview-evaluation/previewChoiceQuestion", "/preview-evaluation/trueOrFalseQuestions","/preview-evaluation/longTextQuestions",
+    "/response-evaluation/choiceQuestions", "/response-evaluation/trueOrFalseQuestions", "/response-evaluation/longTextQuestions","/submit-successfully/index"];
 
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
