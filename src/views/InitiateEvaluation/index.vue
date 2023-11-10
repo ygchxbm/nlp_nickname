@@ -62,12 +62,12 @@ function onSubmit() {
         ({aiNames, realNames} = res.data);
         const questionType = form.questionType;
         const previewPathNameMap = {
-          "选择题": "previewEvaluation",
+          "选择题": "previewChoiceQuestions",
           "判断题": "previewTrueOrFalseQuestions",
           "长文本对比": "previewLongTextQuestions"
         }
         const responsePathNameMap = {
-          "选择题": "choiceQuestion",
+          "选择题": "responseChoiceQuestions",
           "判断题": "responseTrueOrFalseQuestions",
           "长文本对比": "responseLongTextQuestions"
         }
