@@ -1,6 +1,9 @@
 <script setup>
 import {ref, defineEmits} from "vue";
 import {ElMessageBox} from "element-plus";
+import {useRouter} from 'vue-router'
+
+const router = useRouter()
 
 let accuracy = ref(-1);
 let isFinishedAnswer = false
@@ -17,7 +20,8 @@ const emit = defineEmits(['selectedOption']);
 
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
-    console.log(accuracy)
+    console.info("accuracy:", accuracy);
+    router.push({name: "submitSuccessfully"});
   } else {
     ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
       // autofocus: false,
@@ -45,7 +49,7 @@ function selectedOption(group, index, key) {
     const trueOptionNum = Object.values(selectedOptions.value).filter(item => {
       return item.isRealName.toString() === item.selectedValue
     }).length;
-    accuracy = parseFloat(((trueOptionNum / props.nameGroups.length).toFixed(4)))
+    accuracy = parseFloat(((trueOptionNum / props.nameGroups.length).toFixed(4)));
   }
 }
 
@@ -207,7 +211,7 @@ function selectedOption(group, index, key) {
               }
             }
 
-            .eFFCq-option-radio{
+            .eFFCq-option-radio {
               cursor: pointer;
             }
 

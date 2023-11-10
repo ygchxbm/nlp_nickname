@@ -1,6 +1,8 @@
 <script setup>
 import {ref, defineEmits} from "vue";
 import {ElMessageBox} from "element-plus";
+import {useRouter} from 'vue-router'
+const router = useRouter()
 
 let accuracy = ref(-1);
 let isFinishedAnswer = false
@@ -16,7 +18,8 @@ const selectedOptions = ref({});
 const emit = defineEmits(['selectedOption']);
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
-    console.info("accuracy:", accuracy)
+    console.info("accuracy:", accuracy);
+    router.push({name: "submitSuccessfully"});
   } else {
     ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
       // autofocus: false,
