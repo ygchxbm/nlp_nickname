@@ -8,7 +8,7 @@ const isPreview=false;
 
 const historyParam = history.state;
 const title = historyParam.title || '默认标题';
-const time = historyParam.nowFormatDate;
+const time = historyParam.nowFormatDate||"";
 const nameGroups = JSON.parse(historyParam.nameGroups);
 function selectedOption(val) {
   doneOptionNum.value = Reflect.ownKeys(val.value).length;
