@@ -49,11 +49,11 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				},
 			},
 			{
-				path: '/preview-evaluation/index',
-				name: 'previewEvaluation',
-				component: () => import('@/views/previewEvaluation/index.vue'),
+				path: '/preview-evaluation/previewChoiceQuestion',
+				name: 'previewChoiceQuestions',
+				component: () => import('@/views/previewEvaluation/PreviewChoiceQuestion.vue'),
 				meta: {
-					title: '预览评测',
+					title: '预览评测-选择题',
 					roles: ['admin'],
 					icon: 'menu-trend',
 				},
@@ -80,8 +80,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/response-evaluation/choiceQuestions',
-				name: 'choiceQuestion',
-				component: () => import('@/views/responseEvaluation/ChoiceQuestion.vue'),
+				name: 'responseChoiceQuestions',
+				component: () => import('@/views/responseEvaluation/ChoiceQuestions.vue'),
 				meta: {
 					title: '作答评测-选择题',
 					roles: ['admin'],
@@ -108,36 +108,16 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 					icon: 'menu-trend',
 				},
 			},
-			// {
-			// 	path: '/x-strategy/index',
-			// 	name: 'XStrategy',
-			// 	component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
-			// 	meta: {
-			// 		title: '技术中心策略监控',
-			// 		roles: ['admin'],
-			// 		icon: 'menu-trend',
-			// 	},
-			// },
-			// {
-			// 	path: '/strategy-intersection/index',
-			// 	name: 'StrategyIntersection',
-			// 	component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
-			// 	meta: {
-			// 		title: '策略交集',
-			// 		roles: ['admin'],
-			// 		icon: 'menu-intersection',
-			// 	},
-			// 	children: [
-			// 		{
-			// 			path: '/strategy-intersection/rule',
-			// 			name: 'StrategyIntersection',
-			// 			component: () => import('@/views/heatmap/ChoiceQuestion.vue'),
-			// 			meta: {
-			// 				title: '上报与安全处罚交集',
-			// 			},
-			// 		},
-			// 	]
-			// },
+			{
+				path: '/submit-successfully/index',
+				name: 'submitSuccessfully',
+				component: () => import('@/views/submitSuccessfully/index.vue'),
+				meta: {
+					title: '提交成功',
+					roles: ['admin'],
+					icon: 'menu-trend',
+				},
+			},
 		],
 
 	},
