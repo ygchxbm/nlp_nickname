@@ -6,7 +6,7 @@ const isPreview = true;
 
 const historyParam = history.state;
 const title = historyParam.title || '默认标题';
-const time = historyParam.nowFormatDate;
+const time = historyParam.nowFormatDate||"";
 const nameGroups = JSON.parse(historyParam.nameGroups);
 </script>
 <template>

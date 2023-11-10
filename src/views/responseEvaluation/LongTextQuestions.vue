@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import ProgressBar from '@/components/ProgressBar.vue';
 import LongTextQuestionsForm from '@/components/LongTextQuestionsForm.vue';
 import {ref} from "vue";
@@ -8,7 +8,7 @@ const isPreview=false;
 
 const historyParam = history.state;
 const title = historyParam.title || '默认标题';
-const time:string = historyParam.nowFormatDate;
+const time = historyParam.nowFormatDate||"";
 const nameGroups = JSON.parse(historyParam.nameGroups);
 function selectedOption(val) {
   doneOptionNum.value = Reflect.ownKeys(val.value).length;
