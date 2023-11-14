@@ -23,7 +23,10 @@ const form = reactive({
   questionType: '选择题',
   oneGroupNameNum: 5,
   questionNum: 40,
+  referenceNames: []
 })
+const selectedFileName = ref('请上传昵称模板文件');
+let isShowSpanCloseBtn = ref('0');
 
 let realNames = [];
 let aiNames = [];
@@ -42,10 +45,10 @@ const nowFormatDate = computed(() => {
 })
 
 function onlyNumber(value) {
-  if (typeof value === 'number') {
-    return value
+  if (value === '') {
+    return 0
   } else {
-    return parseInt(value).toString()
+    return value.match(/\d+/g).join('');
   }
 }
 
@@ -56,10 +59,11 @@ function onSubmit() {
   params.append('language', form.language);
   params.append('nameStyle', form.nameStyle);
   params.append('namesNumber', allNamesNum.toString());
-  params.append('referenceNames', [].toString());
+  params.append('referenceNames', form.referenceNames);
   axios.post(url + '/getNames', params)
       .then(res => {
         ({aiNames, realNames} = res.data);
+        console.info("realNames:", realNames)
         const questionType = form.questionType;
         const previewPathNameMap = {
           "选择题": "previewChoiceQuestions",
@@ -176,8 +180,30 @@ function getGroupNamesForTQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
   return result
 }
 
-function openFile() {
+function openFile(e) {
+  const node = e.srcElement;
+  const reader = new FileReader();
+  reader.onload = function fileReadCompleted() {
+    form.referenceNames = reader.result.replace(/\[|(])|(")/g, '').split(',');
+    selectedFileName.value = node.files[0].name;
+    isShowSpanCloseBtn.value = '1';
+    // optionGroupNum.value = referenceNames.length / oneGroupNameNum.value;
+    // isLanguageDisable.value = true;
+    // isNameStyleDisable.value = true;
+    // isNamesNumberDisable.value = true;
+    // isOneGroupNameNumDisable.value = true;
+  }
+  reader.readAsText(node.files[0]);
+}
 
+function clearFile() {
+  form.referenceNames = [];
+  selectedFileName.value = '请上传昵称模板文件';
+  isShowSpanCloseBtn.value = '0';
+  // isLanguageDisable.value = false;
+  // isNameStyleDisable.value = false;
+  // isNamesNumberDisable.value = false;
+  // isOneGroupNameNumDisable.value = false;
 }
 
 function questionTypeChange(type) {
@@ -232,7 +258,7 @@ function getUuid() {
           </el-form-item>
           <el-form-item label="题目类型">
             <el-radio-group v-model="form.questionType" text-color="#48a8d1">
-              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type" >
+              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type">
               </el-radio>
             </el-radio-group>
           </el-form-item>
@@ -245,19 +271,18 @@ function getUuid() {
             <el-input :formatter="onlyNumber" v-model="form.questionNum"/>
           </el-form-item>
           <div class="upload">
-            <input class="upload-input" type="file" @change="openFile">
-            <el-button class="upload-btn">
-              <el-icon class="el-icon--right">
-                <Upload/>
-              </el-icon>
-              上传文件
-            </el-button>
-            <div class="span-content">
-              请上传昵称模板文件
-              <!--            <span>{{ selectedFileName }}</span>-->
-              <!--            <el-icon @click="clearFile" :size="16" color="#9b9da1" style="cursor: pointer;border:1px solid #9b9da1;border-radius: 5px;margin-left: 3px" :style="{'opacity':isShowSpanCloseBtn}">-->
-              <!--              <Close/>-->
-              <!--            </el-icon>-->
+            <div class="upload-sets">
+              <input class="upload-input" type="file" @change="openFile">
+              <el-button class="upload-btn">
+                <el-icon class="el-icon--right">
+                  <Upload/>
+                </el-icon>
+                上传文件
+              </el-button>
+            </div>
+            <div class="upload-content">
+              <span class="span-text">{{ selectedFileName }}</span>
+              <div class="close-icon" @click="clearFile" v-if="isShowSpanCloseBtn==='1'"></div>
             </div>
           </div>
           <el-form-item>
@@ -338,20 +363,20 @@ function getUuid() {
           display: flex;
           align-items: center;
 
-          :deep(.el-form-item__content ){
-            .el-radio-group{
-              .el-radio{
-                .el-radio__input.is-checked .el-radio__inner{
+          :deep(.el-form-item__content ) {
+            .el-radio-group {
+              .el-radio {
+                .el-radio__input.is-checked .el-radio__inner {
                   border-color: #48a8d1;
-                  background:#48a8d1;
+                  background: #48a8d1;
                 }
-                .el-radio__input.is-checked+.el-radio__label{
+
+                .el-radio__input.is-checked + .el-radio__label {
                   color: #000000;
                 }
               }
             }
           }
-
 
           :deep(.el-form-item__label) {
             height: 22px;
@@ -397,47 +422,70 @@ function getUuid() {
             height: 40px;
             background: #00A9CEFF;
           }
+
         }
 
         .upload {
-          margin: 0 87px 63px 0;
+          margin-bottom: 30px;
 
-          .upload-input {
-            opacity: 0;
-            width: 80px;
-            height: 30px;
-            border-radius: 15px;
-            position: absolute;
-            z-index: 10;
-          }
-
-          .upload-btn {
+          .upload-sets {
             width: 112px;
-            height: 32px;
-            border-radius: 3px;
-            padding: 5px 16px 5px 18px;
-            color: #000000E6;
-            font-size: 14px;
-            font-weight: 400;
-            //line-height: 22px;
-            text-align: center;
 
-            .el-icon {
-              //width: 16px;
-              //height: 16px;
-              padding: 0;
-              margin: 0 5px 0 0;
+            .upload-input {
+              opacity: 0;
+              width: 112px;
+              height: 30px;
+              border-radius: 15px;
+              position: absolute;
+              z-index: 10;
+              cursor: pointer;
+            }
+
+            .upload-btn {
+              width: 112px;
+              height: 32px;
+              border-radius: 3px;
+              padding: 5px 16px 5px 18px;
+              color: #000000E6;
+              font-size: 14px;
+              font-weight: 400;
+              text-align: center;
+
+              .el-icon {
+                padding: 0;
+                margin: 0 5px 0 0;
+              }
             }
           }
 
-          .span-content {
+          .upload-sets:hover {
+            .upload-btn {
+              border-color: #00A9CEFF;
+              background: #FFFFFF;
+              color: #00A9CEFF;
+            }
+          }
+
+
+          .upload-content {
             margin-top: 8px;
-            //margin-left: 5px;
-            font-size: 12px;
-            min-width: 120px;
+            min-width: 200px;
             color: #9b9da1;
             display: flex;
             align-items: center;
+
+            .span-text {
+              font-size: 12px;
+            }
+
+            .close-icon {
+              width: 16px;
+              height: 16px;
+              background-image: url("@/assets/images/close-circle-filled.png");
+              background-repeat: no-repeat;
+              margin-left: 8px;
+              cursor: pointer;
+            }
           }
         }
 
