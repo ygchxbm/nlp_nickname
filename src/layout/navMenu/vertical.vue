@@ -55,16 +55,10 @@ export default defineComponent({
       defaultActive: route.meta.isDynamic ? route.meta.isDynamicPath : route.path,
       isCollapse: false,
     });
-    //黑名单，路由不显示在侧边栏
-    const blackList = ["previewChoiceQuestions", "previewTrueOrFalseQuestions", "previewLongTextQuestions",
-      "responseChoiceQuestions", "responseTrueOrFalseQuestions", "responseLongTextQuestions", "submitSuccessfully"]
 
     // 获取父级菜单数据
     const menuLists = computed(() => {
-      // console.log(props.menuList)
-      return <any>props.menuList.filter((item: any) => {
-        return !blackList.includes(item.name)
-      });
+      return <any>props.menuList
     });
     // 获取布局配置信息
     const getThemeConfig = computed(() => {

@@ -54,8 +54,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/previewEvaluation/PreviewChoiceQuestion.vue'),
 				meta: {
 					title: '预览评测-选择题',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -64,8 +63,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/previewEvaluation/PreviewTrueOrFalseQuestions.vue'),
 				meta: {
 					title: '预览评测-判断题',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -74,8 +72,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/previewEvaluation/PreviewLongTextQuestions.vue'),
 				meta: {
 					title: '预览评测-长文本',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -84,8 +81,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/responseEvaluation/ChoiceQuestions.vue'),
 				meta: {
 					title: '作答评测-选择题',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -94,8 +90,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/responseEvaluation/TrueOrFalseQuestions.vue'),
 				meta: {
 					title: '作答评测-判断题',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -104,8 +99,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/responseEvaluation/LongTextQuestions.vue'),
 				meta: {
 					title: '作答评测-长文本',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 			{
@@ -114,8 +108,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/submitSuccessfully/index.vue'),
 				meta: {
 					title: '提交成功',
-					roles: ['admin'],
-					icon: 'menu-trend',
+					isHide: true,
 				},
 			},
 		],
