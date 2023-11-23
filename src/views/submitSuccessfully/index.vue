@@ -1,7 +1,15 @@
 <script setup>
 import {useRouter} from 'vue-router'
+import {submitTest} from "@/api";
+
 const router = useRouter()
-function backHome(){
+const historyParam = history.state;
+const {test_id, real_nicknames, ai_nicknames, is_correct} = historyParam;
+submitTest({test_id, real_nicknames, ai_nicknames, is_correct}).then(res => {
+  console.log("submit successfully ！")
+})
+
+function backHome() {
   router.push({name: "home",})
 }
 </script>
@@ -23,18 +31,20 @@ function backHome(){
   </div>
 </template>
 <style lang="scss" scoped>
-.submit-successfully{
+.submit-successfully {
   height: 100vh;
   background-image: url('../../assets/images/bg.png');
   background-repeat: no-repeat;
   overflow: hidden;
-  .main{
+
+  .main {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    .content{
+
+    .content {
       width: 900px;
       height: 750px;
       background: #FFFFFF;
@@ -42,11 +52,13 @@ function backHome(){
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      .log{
+
+      .log {
         width: 76px;
         height: 76px;
       }
-      .text{
+
+      .text {
         color: #000000E6;
         //font-family: "PingFang SC";
         width: 216px;
@@ -58,12 +70,13 @@ function backHome(){
         margin-bottom: 20px;
         text-align: center;
       }
-      .back-home{
-        button{
+
+      .back-home {
+        button {
           width: 220px;
           height: 40px;
           background: #FFFFFF;
-          border:1px solid #EBEBEBFF;
+          border: 1px solid #EBEBEBFF;
           color: #666666FF;
           font-size: 16px;
           font-weight: 400;
