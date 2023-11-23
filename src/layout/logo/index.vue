@@ -1,7 +1,8 @@
 <template>
 	<div class="layout-logo">
-		<img :src="logo" class="avatar" alt="昵称生成平台"/>
-		<div>昵称生成平台</div>
+    <div>
+      <img :src="logo" alt="昵称生成平台">
+    </div>
 	</div>
 </template>
 
@@ -11,8 +12,7 @@ import { useUserInfo } from '@/stores/userInfo';
 import { storeToRefs } from 'pinia';
 import { ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router';
-// import logo from '@/assets/logo.images';
-import logo from '/public/favicon.ico';
+import logo from '@/assets/images/logo.png';
 
 export default defineComponent({
 	name: 'layoutLogo',
@@ -38,7 +38,8 @@ export default defineComponent({
 .layout-logo {
 	//width: 230px;
 	//height: 218px;
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 	font-size: 20px;
 	color: #FFFFFF;
 	animation: logoAnimation 0.3s ease-in-out;
