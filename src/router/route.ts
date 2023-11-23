@@ -34,8 +34,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/home/index.vue'),
 				meta: {
 					title: '首页',
-					roles: ['admin'],
-					icon: 'menu-dashboard',
 				},
 			},
 			{
@@ -44,8 +42,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 				component: () => import('@/views/InitiateEvaluation/index.vue'),
 				meta: {
 					title: '发起评测',
-					roles: ['admin'],
-					icon: 'menu-trend',
 				},
 			},
 			{
