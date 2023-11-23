@@ -11,7 +11,7 @@
       <el-sub-menu :index="val.path" v-if="val.children && val.children.length > 0" :key="val.path">
         <template #title>
           <SvgIcon :name="val.meta.icon" :size="26"/>
-          <span>{{ $t(val.meta.title) }}</span>
+          <span class="title-text">{{ $t(val.meta.title) }}</span>
         </template>
         <SubItem :chil="val.children"/>
       </el-sub-menu>
@@ -122,11 +122,18 @@ export default defineComponent({
 </script>
 
 <style lang='scss'>
+.title-text{
+  margin: 0 auto
+;
+}
 .el-menu {
   width: 230px;
 
   .el-menu-item {
-    padding-left: 50px !important;
+    //padding-left: 50px !important;
+    border-right: 4px solid #222944;
+    display: flex;
+    justify-content: center;
 
     .menu-icon {
       margin-right: 15px;
@@ -136,6 +143,10 @@ export default defineComponent({
       font-size: 14px;
       color: #A4ABBE;
     }
+  }
+
+  .el-menu-item:hover{
+    border-right: 4px solid #424866;
   }
 
   .el-menu-item.is-active {
