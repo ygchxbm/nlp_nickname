@@ -1,26 +1,28 @@
 <script setup>
-import axios from "axios";
 import {ref, reactive, computed} from 'vue';
 import {Upload} from '@element-plus/icons-vue';
 import {useRouter, useRoute} from 'vue-router';
-import {useQuestionnaire} from '@/stores/questionnaire'
-import {storeToRefs} from 'pinia'
+import {createList} from "@/api";
 
 const router = useRouter()
 const route = useRoute()
 
 let isCreatedEvaluation = ref(false)
 let languages = ['中文', '英文', '阿语', '俄语'],
-    projects = ['项目1', '项目2', '项目3'],
+    projects = ['pubg', 'lGame', '项目3'],
     nameStyles = ['pubg', 'lGame'],
-    questionTypes = ['选择题', '判断题', '长文本对比'],
+    questionTypes = [
+      {label: 0, value: '选择题'},
+      {label: 1, value: '判断题'},
+      {label: 2, value: '长文本对比'}
+    ],
     oneGroupNameNums = ['1', '2', '3', '4', '5']
 const form = reactive({
   title: '',
   language: '中文',
-  project: '项目1',
-  nameStyle: 'pubg',
-  questionType: '选择题',
+  project: 'pubg',
+  style: 'pubg',
+  questionType: 0,
   oneGroupNameNum: 5,
   questionNum: 40,
   referenceNames: []
@@ -28,8 +30,6 @@ const form = reactive({
 const selectedFileName = ref('请上传昵称模板文件');
 let isShowSpanCloseBtn = ref('0');
 
-let realNames = [];
-let aiNames = [];
 let nameGroups = ref([]);
 
 let selectedObj = ref({});
@@ -53,131 +53,29 @@ function onlyNumber(value) {
 }
 
 function onSubmit() {
-  const allNamesNum = form.questionNum * form.oneGroupNameNum
-  const url = 'http://127.0.0.1:3000';
-  const params = new URLSearchParams();
-  params.append('language', form.language);
-  params.append('nameStyle', form.nameStyle);
-  params.append('namesNumber', allNamesNum.toString());
-  params.append('referenceNames', form.referenceNames);
-  axios.post(url + '/getNames', params)
-      .then(res => {
-        ({aiNames, realNames} = res.data);
-        console.info("realNames:", realNames)
-        const questionType = form.questionType;
-        const previewPathNameMap = {
-          "选择题": "previewChoiceQuestions",
-          "判断题": "previewTrueOrFalseQuestions",
-          "长文本对比": "previewLongTextQuestions"
-        }
-        const responsePathNameMap = {
-          "选择题": "responseChoiceQuestions",
-          "判断题": "responseTrueOrFalseQuestions",
-          "长文本对比": "responseLongTextQuestions"
-        }
-        if (form.questionType === "选择题") {
-          nameGroups.value = getGroupNamesForCQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
-        } else if (form.questionType === "判断题") {
-          nameGroups.value = getGroupNamesForTQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
-        } else if (form.questionType === "长文本对比") {
-          nameGroups.value = getGroupNamesForCQ(realNames, aiNames, allNamesNum, form.oneGroupNameNum);
-        }
-        if (nameGroups.value.length > 0) {
-          const id = getUuid();
-          const {questionnaires} = storeToRefs(useQuestionnaire());
-          const title = form.title || '默认标题';
-          const responsePathName = Reflect.get(responsePathNameMap, questionType);
-          questionnaires.value[id] = {
-            info: {
-              title,
-              nowFormatDate: nowFormatDate.value,
-            },
-            value: nameGroups,
-            pathName: responsePathName,
-          }
-
-          const previewPathName = Reflect.get(previewPathNameMap, questionType);
-          router.push({
-            name: previewPathName,
-            state: {
-              title,
-              nowFormatDate: nowFormatDate.value,
-              nameGroups: JSON.stringify(nameGroups.value)
-            }
-          })
-        }
-      })
-}
-
-
-function getGroupNamesForCQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
-  const result = [];
-  let i = 0;
-  while (i < allNamesNum) {
-    if (i % oneGroupNameNum === 0) {
-      const randNumber = Math.random();
-      let option;
-      if (randNumber < 0.5) {
-        option = {
-          realNamesGroup: {
-            names: [],
-          },
-          aiNamesGroup: {
-            names: [],
-          },
-        }
-      } else {
-        option = {
-          aiNamesGroup: {
-            names: [],
-          },
-          realNamesGroup: {
-            names: [],
-          },
-        }
-      }
-      result.push(option);
+  createList({
+    title: form.title || "默认标题",
+    language: form.language,
+    project: form.project,
+    style: form.style,
+    question_type: form.questionType,
+    qst_group_num: form.oneGroupNameNum,
+    qst_total_num: form.questionNum,
+    real_nicknames: form.referenceNames
+  }).then(res => {
+    const previewPathNameMap = {
+      0: "previewChoiceQuestions",
+      1: "previewTrueOrFalseQuestions",
+      2: "previewLongTextQuestions"
     }
-    const resLength = result.length;
-    result[resLength - 1].realNamesGroup.names.push(realNames[i]);
-    result[resLength - 1].aiNamesGroup.names.push(aiNames[i]);
-    i++;
-  }
-  return result;
-}
-
-function getGroupNamesForTQ(realNames, aiNames, allNamesNum, oneGroupNameNum) {
-  const result = [];
-  const groupNum = allNamesNum / oneGroupNameNum;
-  let i = 0, n = 0, m = 0;
-  while (i < groupNum) {
-    const randNumber = Math.random();
-    let names;
-    let isRealName;
-    if (randNumber < 0.5) {
-      names = realNames.slice(n * oneGroupNameNum, (n + 1) * oneGroupNameNum);
-      n++;
-      isRealName = true;
-    } else {
-      names = aiNames.slice(m * oneGroupNameNum, (m + 1) * oneGroupNameNum);
-      m++;
-      isRealName = false;
-    }
-    result.push({
-      names,
-      isRealName,
-      option: {
-        true: {
-          value: '正确',
-        },
-        false: {
-          value: '错误',
-        }
+    const previewPathName = Reflect.get(previewPathNameMap, form.questionType);
+    router.push({
+      name: previewPathName,
+      state: {
+        id: res,
       }
-    });
-    i++
-  }
-  return result
+    })
+  })
 }
 
 function openFile(e) {
@@ -187,11 +85,10 @@ function openFile(e) {
     form.referenceNames = reader.result.replace(/\[|(])|(")/g, '').split(',');
     selectedFileName.value = node.files[0].name;
     isShowSpanCloseBtn.value = '1';
-    // optionGroupNum.value = referenceNames.length / oneGroupNameNum.value;
-    // isLanguageDisable.value = true;
-    // isNameStyleDisable.value = true;
-    // isNamesNumberDisable.value = true;
-    // isOneGroupNameNumDisable.value = true;
+    const fileNamesLength = form.referenceNames.length;
+    if (fileNamesLength > form.questionNum) {
+      form.questionNum = fileNamesLength;
+    }
   }
   reader.readAsText(node.files[0]);
 }
@@ -200,10 +97,6 @@ function clearFile() {
   form.referenceNames = [];
   selectedFileName.value = '请上传昵称模板文件';
   isShowSpanCloseBtn.value = '0';
-  // isLanguageDisable.value = false;
-  // isNameStyleDisable.value = false;
-  // isNamesNumberDisable.value = false;
-  // isOneGroupNameNumDisable.value = false;
 }
 
 function questionTypeChange(type) {
@@ -252,13 +145,13 @@ function getUuid() {
             </el-select>
           </el-form-item>
           <el-form-item label="风格">
-            <el-select v-model="form.nameStyle">
+            <el-select v-model="form.style">
               <el-option v-for="item in nameStyles" :key="item" :label="item" :value="item"/>
             </el-select>
           </el-form-item>
           <el-form-item label="题目类型">
             <el-radio-group v-model="form.questionType" text-color="#48a8d1">
-              <el-radio @change="questionTypeChange(type)" v-for="type in questionTypes" :key="type" :label="type" :value="type">
+              <el-radio @change="questionTypeChange(item)" v-for="item in questionTypes" :key="item.label" :label="item.label">{{ item.value }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
@@ -267,7 +160,7 @@ function getUuid() {
               <el-option v-for="item in oneGroupNameNums" :key="item" :label="item" :value="item"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="题目总数">
+          <el-form-item label="昵称总数">
             <el-input :formatter="onlyNumber" v-model="form.questionNum"/>
           </el-form-item>
           <div class="upload">
@@ -368,6 +261,12 @@ function getUuid() {
               .el-radio {
                 .el-radio__input.is-checked .el-radio__inner {
                   border-color: #48a8d1;
+                  background: #ffffff;
+                }
+
+                .el-radio__input.is-checked .el-radio__inner::after{
+                  width: 8px;
+                  height: 8px;
                   background: #48a8d1;
                 }
 
@@ -421,6 +320,10 @@ function getUuid() {
             width: 330px;
             height: 40px;
             background: #00A9CEFF;
+          }
+
+          .el-button{
+            background: #00B2D9;
           }
 
         }
