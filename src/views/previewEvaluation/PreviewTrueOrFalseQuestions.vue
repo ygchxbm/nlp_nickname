@@ -2,12 +2,11 @@
 import PreviewBar from '@/components/previewBar.vue';
 import LastStepAndCommitBtnS from '@/components/LastStepAndCommitBtnS.vue';
 import EvaluationFormForChoiceQuestion from '@/components/TrueOrFalseQuestionsForm.vue';
-const isPreview = true;
+import {useDetailList} from "@/hooks/useDetailList";
 
-const historyParam = history.state;
-const title = historyParam.title || '默认标题';
-const time = historyParam.nowFormatDate||"";
-const nameGroups = JSON.parse(historyParam.nameGroups);
+const isPreview = true;
+const evaluatingData = useDetailList();
+
 </script>
 <template>
   <div class="preview-evaluation">
@@ -20,14 +19,14 @@ const nameGroups = JSON.parse(historyParam.nameGroups);
       <div class="content">
         <div class="form">
           <EvaluationFormForChoiceQuestion
-              :title="title"
-              :time="time"
-              :nameGroups="nameGroups"
+              :title="evaluatingData.title"
+              :time="evaluatingData.create_time"
+              :nameGroups="evaluatingData.nameGroups"
               :isPreview="isPreview">
           </EvaluationFormForChoiceQuestion>
         </div>
         <div class="BtnS">
-          <LastStepAndCommitBtnS></LastStepAndCommitBtnS>
+          <LastStepAndCommitBtnS :id="evaluatingData.id" :type="evaluatingData.question_type"></LastStepAndCommitBtnS>
         </div>
       </div>
     </div>

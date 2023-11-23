@@ -9,6 +9,7 @@ let accuracy = ref(-1);
 let isFinishedAnswer = false
 
 const props = defineProps({
+  id: String | Number,
   title: String,
   time: String,
   nameGroups: Object,
@@ -21,7 +22,27 @@ const emit = defineEmits(['selectedOption']);
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
     console.info("accuracy:", accuracy);
-    router.push({name: "submitSuccessfully"});
+    const real_nicknames = [];
+    const ai_nicknames = [];
+    for (const index in props.nameGroups) {
+      if (!props.nameGroups[index].isRealName) {
+        ai_nicknames.push(...props.nameGroups[index].names);
+      } else {
+        real_nicknames.push(...props.nameGroups[index].names);
+      }
+    }
+    const is_correct = Object.values(selectedOptions.value).filter(item => {
+      return item.isRealName
+    }).length;
+    router.push({
+      name: "submitSuccessfully",
+      state: {
+        test_id: props.id,
+        real_nicknames,
+        ai_nicknames,
+        is_correct
+      }
+    });
   } else {
     ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
       // autofocus: false,

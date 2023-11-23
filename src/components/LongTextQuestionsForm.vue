@@ -2,12 +2,14 @@
 import {ref} from "vue";
 import {ElMessageBox} from "element-plus";
 import {useRouter} from 'vue-router'
+
 const router = useRouter()
 
 let accuracy = ref(-1);
 let isFinishedAnswer = false
 
 const props = defineProps({
+  id: String | Number,
   title: String,
   time: String,
   nameGroups: Object,
@@ -16,10 +18,28 @@ const props = defineProps({
 
 const selectedOptions = ref({});
 const emit = defineEmits(['selectedOption']);
+
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
     console.info("accuracy:", accuracy);
-    router.push({name: "submitSuccessfully"});
+    const real_nicknames = [];
+    const ai_nicknames = [];
+    for (const index in props.nameGroups) {
+      ai_nicknames.push(...props.nameGroups[index].aiNamesGroup.names);
+      real_nicknames.push(...props.nameGroups[index].realNamesGroup.names);
+    }
+    const is_correct = Object.values(selectedOptions.value).filter(item => {
+      return item === 'realNamesGroup'
+    }).length;
+    router.push({
+      name: "submitSuccessfully",
+      state: {
+        test_id: props.id,
+        real_nicknames,
+        ai_nicknames,
+        is_correct
+      }
+    });
   } else {
     ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
       // autofocus: false,
@@ -44,7 +64,7 @@ function selectedOption(group, index, key) {
   if (doneOptionNum === props.nameGroups.length) {
     isFinishedAnswer = true;
     const trueOptionNum = Object.values(selectedOptions.value).filter(item => {
-      return item.selectedValue=== 'realNamesGroup'
+      return item.selectedValue === 'realNamesGroup'
     }).length;
     accuracy = parseFloat(((trueOptionNum / props.nameGroups.length).toFixed(4)))
   }
@@ -80,7 +100,8 @@ function getLongTest(str) {
                       {'eFFCq-option-selected':(groupIndex in selectedOptions&&selectedOptions[groupIndex].selectedValue===key&&!isPreview)},
                       {'eFFCq-option':!(groupIndex in selectedOptions)&&!isPreview}]">
                 <div class="eFFCq-option-radio"><span>{{ ['A', 'B'][index] }}</span></div>
-                <div class="eFFCq-option-Text">{{ getLongTest(item.names.join(' , ')) }}</div>
+                <div class="eFFCq-option-Text">{{ item.names.join(' , ')}}</div>
+<!--                <div class="eFFCq-option-Text">{{ getLongTest(item.names.join(' , ')) }}</div>-->
               </li>
             </ul>
           </li>
@@ -209,7 +230,7 @@ function getLongTest(str) {
               }
             }
 
-            .eFFCq-option{
+            .eFFCq-option {
               cursor: pointer;
             }
 
@@ -222,7 +243,8 @@ function getLongTest(str) {
 
               .eFFCq-option-radio {
                 background: #48a9ce;
-                span{
+
+                span {
                   color: #FFFFFFFF;
                 }
               }

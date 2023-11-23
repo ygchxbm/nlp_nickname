@@ -1,15 +1,17 @@
 <script setup>
 import ProgressBar from '@/components/ProgressBar.vue';
 import EvaluationFormForChoiceQuestion from '@/components/TrueOrFalseQuestionsForm.vue';
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useDetailList} from "@/hooks/useDetailList";
 
 const doneOptionNum = ref(0);
-const isPreview=false;
+const isPreview = false;
+const evaluatingData = useDetailList();
 
-const historyParam = history.state;
-const title = historyParam.title || '默认标题';
-const time = historyParam.nowFormatDate||"";
-const nameGroups = JSON.parse(historyParam.nameGroups);
+const allOptionNum = computed(() => {
+  return evaluatingData.value["qst_total_num"] / evaluatingData.value["qst_group_num"]
+})
+
 function selectedOption(val) {
   doneOptionNum.value = Reflect.ownKeys(val.value).length;
 }
@@ -19,13 +21,14 @@ function selectedOption(val) {
     <div class="main">
       <div class="content">
         <div class="progress">
-          <ProgressBar :doneOptionNum="doneOptionNum" :allOptionNum="nameGroups.length"></ProgressBar>
+          <ProgressBar :doneOptionNum="doneOptionNum" :allOptionNum="allOptionNum"></ProgressBar>
         </div>
         <div class="form">
           <EvaluationFormForChoiceQuestion
-              :title="title"
-              :time="time"
-              :nameGroups="nameGroups"
+              :id="evaluatingData.id"
+              :title="evaluatingData.title"
+              :time="evaluatingData.create_time"
+              :nameGroups="evaluatingData.nameGroups"
               :isPreview="isPreview"
               @selectedOption="selectedOption">
           </EvaluationFormForChoiceQuestion>

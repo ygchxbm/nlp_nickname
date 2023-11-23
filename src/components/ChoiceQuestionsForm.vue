@@ -9,6 +9,7 @@ let accuracy = ref(-1);
 let isFinishedAnswer = false
 
 const props = defineProps({
+  id: String | Number,
   title: String,
   time: String,
   nameGroups: Object,
@@ -21,7 +22,24 @@ const emit = defineEmits(['selectedOption']);
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
     console.info("accuracy:", accuracy);
-    router.push({name: "submitSuccessfully"});
+    const real_nicknames = [];
+    const ai_nicknames = [];
+    for (const index in props.nameGroups) {
+      ai_nicknames.push(...props.nameGroups[index].aiNamesGroup.names);
+      real_nicknames.push(...props.nameGroups[index].realNamesGroup.names);
+    }
+    const is_correct = Object.values(selectedOptions.value).filter(item => {
+      return item === 'realNamesGroup'
+    }).length;
+    router.push({
+      name: "submitSuccessfully",
+      state: {
+        test_id: props.id,
+        real_nicknames,
+        ai_nicknames,
+        is_correct
+      }
+    });
   } else {
     ElMessageBox.alert('題目还未答完，请继续答题', '提示', {
       // autofocus: false,
@@ -57,7 +75,6 @@ let config = {
   showResultsImmediately: false,//是否立即显示答案
 }
 
-// let selectedOptions = ref({});
 function selectOption(groupIndex, name) {
   if (!config.recurrentSelection) {
     if (!Reflect.has(selectedOptions.value, groupIndex)) {
@@ -188,13 +205,13 @@ function selectOption(groupIndex, name) {
         }
 
         ul {
-          margin-top: 10px;
+          margin: 8px 0;
           padding: 5px 0;
 
           .option-base {
             display: flex;
             line-height: 30px;
-            padding: 5px 0;
+            padding: 10px 0;
             border-radius: 8px;
             min-width: 500px;
             margin: 1px 0;
@@ -204,7 +221,7 @@ function selectOption(groupIndex, name) {
               height: 30px;
               border: 1px solid #e6e6e6;
               border-radius: 15px;
-              margin: 0 20px 0 5px;
+              margin: 0 20px 0 20px;
               display: flex;
               justify-content: center;
               align-items: center;
