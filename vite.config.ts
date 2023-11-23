@@ -31,6 +31,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 				'/api': {
 					target: 'http://momi.qq.com',
 					changeOrigin: true,
+					followRedirects: true,
+					configure:(proxy,_options)=>{
+						proxy.on('proxyReq', (proxyReq) => {
+							// proxyReq.setHeader("Cookie", "access_token=59b3c60b069ac03c104060c4301cac08");
+						})
+					}
 				},
 			},
 		},
