@@ -1,12 +1,27 @@
 <script setup>
 import {useRouter} from 'vue-router'
+
 const router = useRouter()
-function lastStep(){
+
+const props = defineProps({
+  id: Number || String,
+  type: Number
+})
+
+function lastStep() {
   router.push({name: "InitiateEvaluation",})
 }
 
-function shareEvaluation(){
-
+function shareEvaluation() {
+  const responsePathMap = {
+    0: "/response-evaluation/choiceQuestions",
+    1: "/response-evaluation/trueOrFalseQuestions",
+    2: "/response-evaluation/longTextQuestions"
+  }
+  console.info("props.type:", props.type)
+  const path = responsePathMap[props.type];
+  const url = window.location.href.split('/#/')[0] + "/#" + `${path}?id=${props.id}`
+  navigator.clipboard.writeText(url);
 }
 </script>
 
