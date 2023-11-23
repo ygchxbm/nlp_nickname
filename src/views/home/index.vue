@@ -1,6 +1,6 @@
 <script setup>
 import {useRouter} from 'vue-router';
-import {ref, computed, onMounted} from "vue";
+import {ref,onMounted} from "vue";
 import {deleteList, getTestList} from "@/api";
 
 const router = useRouter()
@@ -73,7 +73,7 @@ function doLastTimeFunc(func, delay) {
     }
 
     function promiseAll() {
-      Promise.all(promises).then(value => {
+      Promise.all(promises).then(() => {
         getTestList().then(res => {
           questionnaires.value = res;
         })
