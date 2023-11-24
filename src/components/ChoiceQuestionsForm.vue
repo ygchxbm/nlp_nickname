@@ -116,7 +116,7 @@ function selectOption(groupIndex, name) {
                 {'option-item_true':(groupIndex in selectedOptions&&selectedOptions[groupIndex]===name&&(config.recurrentSelection||name.includes('real')))&&!isPreview},
                 {'option-item_false':(groupIndex in selectedOptions&&selectedOptions[groupIndex]===name&&(name.includes('ai')&&config.showResultsImmediately))&&!isPreview},
                 ]">
-                <div class="option-label">{{ ["A", "b"][optionIndex] }}</div>
+                <div class="option-label">{{ ["A", "B"][optionIndex] }}</div>
                 <div class="option-content">{{ option.names.join(' , ') }}</div>
               </li>
             </ul>
