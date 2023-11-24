@@ -44,11 +44,13 @@ const nowFormatDate = computed(() => {
   return `${year}-${month}-${strDate}`
 })
 
-function onlyNumber(value) {
-  if (value === '') {
-    return 0
-  } else {
-    return value.match(/\d+/g).join('');
+function onlyNumber() {
+  if (typeof form.questionNum === 'string') {
+    if (form.questionNum === '') {
+      form.questionNum = 0
+    } else {
+      form.questionNum = form.questionNum.match(/\d+/g).join('');
+    }
   }
 }
 
@@ -152,7 +154,8 @@ function questionTypeChange(type) {
             </el-select>
           </el-form-item>
           <el-form-item label="昵称总数">
-            <el-input :formatter="onlyNumber" v-model="form.questionNum"/>
+            <!--            <el-input :formatter="onlyNumber" v-model="form.questionNum"/>-->
+            <el-input @blur="onlyNumber" v-model="form.questionNum"/>
           </el-form-item>
           <div class="upload">
             <div class="upload-sets">
@@ -255,7 +258,7 @@ function questionTypeChange(type) {
                   background: #ffffff;
                 }
 
-                .el-radio__input.is-checked .el-radio__inner::after{
+                .el-radio__input.is-checked .el-radio__inner::after {
                   width: 8px;
                   height: 8px;
                   background: #48a8d1;
@@ -313,7 +316,7 @@ function questionTypeChange(type) {
             background: #00A9CEFF;
           }
 
-          .el-button{
+          .el-button {
             background: #00B2D9;
           }
 
