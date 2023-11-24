@@ -27,7 +27,7 @@ function selectedOption(val) {
           <LongTextQuestionsForm
               :id="evaluatingData.id"
               :title="evaluatingData.title"
-              :time="evaluatingData.create_time"
+              :time="evaluatingData['create_time']"
               :nameGroups="evaluatingData.nameGroups"
               :isPreview="isPreview"
               @selectedOption="selectedOption">
