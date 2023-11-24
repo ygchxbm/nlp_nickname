@@ -1,5 +1,6 @@
 <script setup>
 import {useRouter} from 'vue-router'
+import {ElMessage} from "element-plus";
 
 const router = useRouter()
 
@@ -22,6 +23,10 @@ function shareEvaluation() {
   const path = responsePathMap[props.type];
   const url = window.location.href.split('/#/')[0] + "/#" + `${path}?id=${props.id}`
   navigator.clipboard.writeText(url);
+  ElMessage({
+    message: '链接已复制到粘贴板',
+    type: 'success',
+  })
 }
 </script>
 

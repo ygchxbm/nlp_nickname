@@ -52,6 +52,10 @@ function share(id) {
   const path = responsePathMap[questionnaire.question_type];
   const url = window.location.href.replace('/home', path) + `?id=${id}`
   navigator.clipboard.writeText(url);
+  ElMessage({
+    message: '链接已复制到粘贴板',
+    type: 'success',
+  })
 }
 
 function deleteRow() {
