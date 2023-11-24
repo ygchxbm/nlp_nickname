@@ -199,32 +199,41 @@ function selectOption(groupIndex, name) {
 
         > li {
           list-style: none;
-          margin: 5px 0;
-          padding: 5px 0;
+          //margin: 5px 0;
+          //padding: 5px 0;
           border-bottom: 1px solid #efefef;
         }
 
         ul {
           margin: 8px 0;
-          padding: 5px 0;
+          padding: 6px 0;
 
           .option-base {
             display: flex;
+            align-items: center;
             line-height: 30px;
-            padding: 10px 0;
+            padding: 8px 0;
             border-radius: 8px;
             min-width: 500px;
             margin: 1px 0;
 
             .option-label {
-              width: 30px;
-              height: 30px;
+              width: 32px;
+              height: 32px;
               border: 1px solid #e6e6e6;
               border-radius: 15px;
               margin: 0 20px 0 20px;
               display: flex;
               justify-content: center;
               align-items: center;
+            }
+
+            .option-content {
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 28px;
+              max-width: 700px;
+              min-height: 30px;
             }
           }
 
@@ -245,6 +254,10 @@ function selectOption(groupIndex, name) {
               background: #48a8d0;
               border-color: #48a8d0;
               color: #ffffff;
+            }
+
+            .option-content {
+              color: #00A9CEFF;
             }
           }
 

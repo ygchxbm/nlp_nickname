@@ -182,7 +182,7 @@ function getLongTest(str) {
 
         .eFFCq-option-group {
           width: 800px;
-          height: 473px;
+          min-height: 473px;
           margin-bottom: 20px;
           list-style: none;
 
@@ -220,8 +220,9 @@ function getLongTest(str) {
 
               .eFFCq-option-Text {
                 width: 350px;
-                height: 384px;
+                min-height: 384px;
                 margin-left: 20px;
+                margin-bottom: 20px;
                 color: #000000E6;
                 font-size: 14px;
                 font-weight: 400;

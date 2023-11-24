@@ -185,19 +185,19 @@ function selectedOption(group, index, key) {
 
         .eFFCq-option {
           width: 800px;
-          height: 118px;
+          min-height: 118px;
           margin: 10px 0;
           list-style: none;
-          border-bottom: 1px solid #EBEBEBFF;
+          //border-bottom: 1px solid #EBEBEBFF;
 
           .eFFCq-option-value {
             display: flex;
-            align-items: center;
-            height: 28px;
+            //align-items: center;
+            min-height: 28px;
             color: #000000E6;
             font-size: 14px;
             font-weight: 400;
-            line-height: 28px;
+            line-height: 22px;
 
             span {
               font-weight: 500;
@@ -206,6 +206,7 @@ function selectedOption(group, index, key) {
           }
 
           .eFFCq-option-radios {
+            margin-top: 10px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -276,6 +277,7 @@ function selectedOption(group, index, key) {
 
               .eFFCq-radio-label {
                 line-height: 40px;
+                color: #00A9CEFF;
               }
             }
           }

@@ -73,9 +73,9 @@ function getGroupNames(realNames, aiNames, oneGroupNameNum, allNamesNum, questio
             result.push({
                 names, isRealName, option: {
                     true: {
-                        value: '正确',
+                        value: '是',
                     }, false: {
-                        value: '错误',
+                        value: '否',
                     }
                 }
             });
