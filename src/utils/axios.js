@@ -14,11 +14,10 @@ export function post(url, data) {
     return new Promise((resolve, reject) => {
         axios.post(url, data)
             .then(res => {
-                // console.log(res)
                 resolve(res.data);
             })
             .catch(err => {
-                reject(err.data)
+                reject(err)
             })
     });
 }
@@ -26,17 +25,15 @@ export function post(url, data) {
 /**
  * get方法，对应get请求
  * @param  url {String} [请求的url地址]
- * @param  data {Object}[请求时携带的参数]
  */
-export function get(url, data) {
+export function get(url) {
     return new Promise((resolve, reject) => {
-        axios.get(url, data)
+        axios.get(url)
             .then(res => {
-                // console.log(res)
                 resolve(res.data);
             })
             .catch(err => {
-                reject(err.data)
+                reject(err)
             })
     });
 }

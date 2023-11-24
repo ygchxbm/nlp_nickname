@@ -1,7 +1,8 @@
 <script setup>
 import {useRouter} from 'vue-router';
-import {ref,onMounted} from "vue";
+import {ref, onMounted} from "vue";
 import {deleteList, getTestList} from "@/api";
+import {ElMessage} from 'element-plus'
 
 const router = useRouter()
 const questionnaires = ref([])
@@ -9,6 +10,12 @@ const questionnaires = ref([])
 onMounted(() => {
   getTestList().then(res => {
     questionnaires.value = res;
+  }).catch(err => {
+    ElMessage({
+      showClose: true,
+      message: err.message,
+      type: 'error',
+    })
   })
 })
 
@@ -48,16 +55,17 @@ function share(id) {
 }
 
 function deleteRow() {
-  const id=arguments[0]
+  const id = arguments[0]
   questionnaires.value = questionnaires.value.filter(item => {
     return item["id"] !== id
   })
   return deleteList((id));
 }
+
 function doLastTimeFunc(func, delay) {
   const promises = [];
   let tempValue, listener;
-  let deleteNum=0
+  let deleteNum = 0
   return function () {
     const promise = func(...arguments);
     promise.then(res => {
@@ -123,7 +131,7 @@ const tempDeleteRow = doLastTimeFunc(deleteRow, 1000)
       background: #f8f8f8;
     }
 
-    :deep(.el-table__row) .cell {
+    :deep(.el-table__row .cell) {
       color: #000000E6;
       font-size: 14px;
       font-weight: 400;
@@ -133,20 +141,17 @@ const tempDeleteRow = doLastTimeFunc(deleteRow, 1000)
       background: #f8f8f8;
     }
 
-    :deep(.is-leaf) .cell {
+    :deep(.is-leaf.cell) {
       color: #00000099;
       font-size: 14px;
       font-weight: 400;
     }
 
-    :deep(.el-table__row) :first-child .cell {
+    :deep(.el-table__row :first-child .cell) {
       color: #00A9CEFF;
       cursor: pointer;
     }
 
-    :deep(.el-table__row) :first-child .cell:hover {
-      color: #00A9CEFF;
-    }
 
     :deep(.el-table_1_column_2) {
       text-align: center;
@@ -154,12 +159,6 @@ const tempDeleteRow = doLastTimeFunc(deleteRow, 1000)
 
     :deep(.el-table_1_column_3) {
       text-align: center;
-    }
-
-    :deep(.el-table__row) .el-table_1_column_3 {
-      .el-button {
-      //display: flex; //align-items: center;
-      }
     }
 
   }
