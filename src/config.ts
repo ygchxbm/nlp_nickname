@@ -1,1 +1,1 @@
-export const site = 'cgameMonitor';
+export const site = 'llm_nickname';
