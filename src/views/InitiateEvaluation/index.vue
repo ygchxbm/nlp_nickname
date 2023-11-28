@@ -119,19 +119,19 @@ function questionTypeChange(type) {
           <el-form-item label="标题">
             <el-input v-model="form.title" placeholder="请输入评测标题"/>
           </el-form-item>
-          <el-form-item label="语言">
-            <el-select v-model="form.language">
+          <el-form-item label="项目">
+            <el-select v-model="form.project">
               <el-option
-                  v-for="item in languages"
+                  v-for="item in projects"
                   :key="item"
                   :label="item"
                   :value="item"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="项目">
-            <el-select v-model="form.project">
+          <el-form-item label="语言">
+            <el-select v-model="form.language">
               <el-option
-                  v-for="item in projects"
+                  v-for="item in languages"
                   :key="item"
                   :label="item"
                   :value="item"/>
