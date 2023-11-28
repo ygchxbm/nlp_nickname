@@ -243,6 +243,7 @@ function getLongTest(str) {
 
             .eFFCq-option-selected {
               background: #e3f5f9;
+              border: 1px solid #B4E5EFFF ;
 
               .eFFCq-option-radio {
                 background: #48a9ce;

@@ -117,16 +117,16 @@ const tempDeleteRow = doLastTimeFunc(deleteRow, 1000)
 </template>
 <style scoped>
 .home {
-  height: 100vh;
-  background: #f8f8f8;
+  height: 100%;
   display: flex;
   justify-content: center;
 
   .content {
     padding-top: 72px;
+    padding-bottom:12px;
 
     :deep(.el-table__inner-wrapper) {
-      border: 1px solid #e6e5e5;
+      border: 1px solid #E7E7E7;
       box-sizing: border-box;
       overflow: hidden;
     }
