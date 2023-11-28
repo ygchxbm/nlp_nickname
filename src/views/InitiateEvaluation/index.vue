@@ -1,17 +1,14 @@
 <script setup>
-import {ref, reactive, computed} from 'vue';
+import {ref, reactive, computed, onMounted} from 'vue';
 import {Upload} from '@element-plus/icons-vue';
 import {useRouter, useRoute} from 'vue-router';
-import {createList} from "@/api";
+import {createList, getSetting} from "@/api";
 
 const router = useRouter()
 const route = useRoute()
 
 let isCreatedEvaluation = ref(false)
-let languages = ['中文', '英文', '阿语', '俄语'],
-    projects = ['pubg', 'lGame', '项目3'],
-    nameStyles = ['pubg', 'lGame'],
-    questionTypes = [
+let questionTypes = [
       {label: 0, value: '选择题'},
       {label: 1, value: '判断题'},
       {label: 2, value: '长文本对比'}
@@ -27,6 +24,9 @@ const form = reactive({
   questionNum: 40,
   referenceNames: []
 })
+
+const settingsObj = ref({});
+
 const selectedFileName = ref('请上传昵称模板文件');
 let isShowSpanCloseBtn = ref('0');
 
@@ -42,6 +42,35 @@ const nowFormatDate = computed(() => {
   if (month < 10) month = `0${month}` // 如果月份是个位数，在前面补0
   if (strDate < 10) strDate = `0${strDate}` // 如果日是个位数，在前面补0
   return `${year}-${month}-${strDate}`
+})
+const projects=ref([]);
+const languages = computed(() => {
+  const languages=settingsObj.value[form.project]?.language||[];
+  form.language=languages[0]||'';
+  return languages;
+})
+
+const nameStyles = computed(() => {
+  const styles=settingsObj.value[form.project]?.style||[];
+  form.style=styles[0]||'';
+  return styles;
+})
+
+onMounted(() => {
+  getSetting().then(res => {
+    if (res) {
+      for (const key in res) {
+        const item = Reflect.get(res, key);
+        const {project, language, style} = item;
+        settingsObj.value[project] = {
+          language,
+          style
+        }
+      }
+      projects.value=Reflect.ownKeys(settingsObj.value)||[]
+      form.project= projects.value[0];
+    }
+  })
 })
 
 function onlyNumber() {
@@ -121,11 +150,7 @@ function questionTypeChange(type) {
           </el-form-item>
           <el-form-item label="项目">
             <el-select v-model="form.project">
-              <el-option
-                  v-for="item in projects"
-                  :key="item"
-                  :label="item"
-                  :value="item"/>
+              <el-option v-for="item in projects" :key="item" :label="item" :value="item"/>
             </el-select>
           </el-form-item>
           <el-form-item label="语言">
@@ -220,12 +245,13 @@ function questionTypeChange(type) {
   .bg-padding {
     height: 100%;
     padding: 20px;
-    background: #FFFFFF;
+
+    background: #F8F8F8FF;
 
     .content {
       min-height: 770px;
       height: 100%;
-      background: #F8F8F8FF;
+      background: #FFFFFF;
       border-radius: 15px;
       display: flex;
       flex-direction: column;

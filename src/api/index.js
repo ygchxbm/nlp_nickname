@@ -16,7 +16,6 @@ export const getDetailList=(id)=>{
             id,
         }
     })
-
 }
 
 export const deleteList = (id) => {
@@ -49,5 +48,13 @@ export const submitTest=(data)=>{
         data:{
             data,
         }
+    })
+}
+
+export const getSetting=()=>{
+    const url = "/llm_nickname.setting";
+    return service({
+        url,
+        method:"get",
     })
 }

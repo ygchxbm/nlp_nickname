@@ -10,8 +10,6 @@ export function useDetailList() {
     onMounted(() => {
         getDetailList(id).then(res => {
             let {ai_nicknames, real_nicknames,qst_group_num, qst_total_num, question_type} = res;
-            ai_nicknames = ai_nicknames.split("\n");
-            real_nicknames = real_nicknames.split("\n");
             evaluatingData.value = res;
             evaluatingData.value.ai_nicknames = ai_nicknames;
             evaluatingData.value.real_nicknames = real_nicknames;
