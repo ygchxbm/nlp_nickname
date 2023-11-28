@@ -19,9 +19,8 @@ function shareEvaluation() {
     1: "/response-evaluation/trueOrFalseQuestions",
     2: "/response-evaluation/longTextQuestions"
   }
-  console.info("props.type:", props.type)
   const path = responsePathMap[props.type];
-  const url = window.location.href.split('/#/')[0] + "/#" + `${path}?id=${props.id}`
+  const url = window.location.href.split('/#/')[0] + "/#" + `${path}?id=${props.id}`;
   navigator.clipboard.writeText(url);
   ElMessage({
     message: '链接已复制到粘贴板',

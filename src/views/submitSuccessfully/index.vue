@@ -6,7 +6,7 @@ const router = useRouter()
 const historyParam = history.state;
 const {test_id, real_nicknames, ai_nicknames, is_correct} = historyParam;
 submitTest({test_id, real_nicknames, ai_nicknames, is_correct}).then(() => {
-  console.log("submit successfully ！")
+  // console.log("submit successfully ！")
 })
 
 function backHome() {

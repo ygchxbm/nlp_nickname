@@ -21,7 +21,7 @@ const emit = defineEmits(['selectedOption']);
 
 function submitQuestionnaire() {
   if (isFinishedAnswer) {
-    console.info("accuracy:", accuracy);
+    // console.info("accuracy:", accuracy);
     const real_nicknames = [];
     const ai_nicknames = [];
     for (const index in props.nameGroups) {
