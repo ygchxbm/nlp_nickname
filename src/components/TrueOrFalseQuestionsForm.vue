@@ -198,6 +198,8 @@ function selectedOption(group, index, key) {
             font-size: 14px;
             font-weight: 400;
             line-height: 22px;
+            word-break: break-word;
+            word-wrap: break-word;
 
             span {
               font-weight: 500;

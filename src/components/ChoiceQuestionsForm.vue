@@ -234,6 +234,8 @@ function selectOption(groupIndex, name) {
               line-height: 28px;
               max-width: 700px;
               min-height: 30px;
+              word-break: break-word;
+              word-wrap: break-word;
             }
           }
 

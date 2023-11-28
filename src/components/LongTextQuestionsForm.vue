@@ -228,6 +228,8 @@ function getLongTest(str) {
                 font-weight: 400;
                 line-height: 24px;
                 overflow: hidden;
+                word-break: break-word;
+                word-wrap: break-word;
               }
             }
 
