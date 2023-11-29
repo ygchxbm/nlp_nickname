@@ -34,6 +34,9 @@ export const createList=(data) => {
     return service({
         url,
         method:"post",
+        headers:{
+            "Content-Type":"application/json"
+        },
         data:{
             data,
         }

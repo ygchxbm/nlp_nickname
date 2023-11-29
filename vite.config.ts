@@ -30,11 +30,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 			proxy: {
 				'/api': {
 					target: 'http://momi.qq.com',
+					// target: 'http://120.77.47.227:3000',
 					changeOrigin: true,
 					followRedirects: true,
 					configure:(proxy,_options)=>{
 						proxy.on('proxyReq', (proxyReq) => {
-							// proxyReq.setHeader("Cookie", "access_token=59b3c60b069ac03c104060c4301cac08");
+							// proxyReq.setHeader("Cookie", "access_token=c5db41fb1add191c9e8f5a4de088469f");
 						})
 					}
 				},
