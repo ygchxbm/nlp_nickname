@@ -45,7 +45,7 @@ export const createList = (data) => {
 }
 
 export const submitTest = (data) => {
-    const url = "/llm_nickname.test_submite_create";
+    const url = "/llm_nickname.test_submit_create";
     return service({
         url,
         method: "post",
