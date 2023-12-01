@@ -1,18 +1,19 @@
 import service from "@/utils/request";
+
 export const getTestList = () => {
     const url = "/llm_nickname.test_list";
     return service({
         url,
-        method:"get"
+        method: "get"
     })
 }
 
-export const getDetailList=(id)=>{
+export const getDetailList = (id) => {
     const url = "/llm_nickname.test_detail";
     return service({
         url,
-        method:"post",
-        params:{
+        method: "post",
+        params: {
             id,
         }
     })
@@ -22,42 +23,40 @@ export const deleteList = (id) => {
     const url = "/llm_nickname.test_delete";
     return service({
         url,
-        method:"post",
-        params:{
+        method: "post",
+        params: {
             id,
         }
     })
 }
 
-export const createList=(data) => {
+export const createList = (data) => {
     const url = "/llm_nickname.test_create";
     return service({
         url,
-        method:"post",
-        headers:{
-            "Content-Type":"application/json"
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
         },
-        data:{
+        data: {
             data,
         }
     })
 }
 
-export const submitTest=(data)=>{
+export const submitTest = (data) => {
     const url = "/llm_nickname.test_submite_create";
     return service({
         url,
-        method:"post",
-        data:{
-            data,
-        }
+        method: "post",
+        data,
     })
 }
 
-export const getSetting=()=>{
+export const getSetting = () => {
     const url = "/llm_nickname.setting";
     return service({
         url,
-        method:"get",
+        method: "get",
     })
 }
