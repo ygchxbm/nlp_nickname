@@ -1,12 +1,32 @@
 <script setup>
 import {useRouter} from 'vue-router'
 import {submitTest} from "@/api";
+import {onMounted, ref} from "vue";
+import checkImg from "@/assets/images/check-circle-filled.png";
+import errorImg from "@/assets/images/cancel.png";
 
 const router = useRouter()
 const historyParam = history.state;
 const {test_id, real_nicknames, ai_nicknames, is_correct} = historyParam;
-submitTest({test_id, real_nicknames, ai_nicknames, is_correct}).then(() => {
-  // console.log("submit successfully ！")
+
+const obj = {
+  success: {
+    imgSrc: checkImg,
+    info: "提交成功，感谢您的参与！"
+  },
+  error: {
+    imgSrc: errorImg,
+    info: "提交失败，请重试！"
+  }
+}
+const commitResult = ref('');
+
+onMounted(() => {
+  submitTest({test_id, real_nicknames, ai_nicknames, is_correct}).then((res) => {
+    commitResult.value = "success";
+  }).catch(() => {
+    commitResult.value = "error";
+  })
 })
 
 function backHome() {
@@ -16,12 +36,12 @@ function backHome() {
 <template>
   <div class="submit-successfully">
     <div class="main">
-      <div class="content">
+      <div class="content" v-if="commitResult">
         <div class="log">
-          <img src="@/assets/images/check-circle-filled.png" alt="check-circle-filled">
+          <img :src="obj[commitResult].imgSrc" alt="check-circle-filled">
         </div>
         <div class="text">
-          <span>提交成功，感谢您的参与！</span>
+          <span>{{ obj[commitResult].info }}</span>
         </div>
         <div class="back-home" @click="backHome">
           <button>返回首页</button>
@@ -56,6 +76,11 @@ function backHome() {
       .log {
         width: 76px;
         height: 76px;
+
+        img {
+          width: 76px;
+          height: 76px;
+        }
       }
 
       .text {
