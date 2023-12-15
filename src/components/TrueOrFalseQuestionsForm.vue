@@ -13,6 +13,7 @@ const props = defineProps({
   title: String,
   time: String,
   nameGroups: Object,
+  stem:String,
   isPreview: Boolean
 })
 
@@ -82,7 +83,7 @@ function selectedOption(group, index, key) {
         <div class="eFFCq-title">{{ title }}</div>
         <div class="eFFCq-time">{{ time }}</div>
         <div class="eFFCq-tips-commit">
-          <div class="eFFCq-tips">请判断下面每组人名是否是真实人名</div>
+          <div class="eFFCq-tips">{{stem}}</div>
           <el-button v-if="!isPreview" class="eFFCq-commit" type="primary" @click="submitQuestionnaire">提交答案</el-button>
         </div>
       </div>

@@ -23,6 +23,7 @@ const evaluatingData = useDetailList();
               :title="evaluatingData.title"
               :time="evaluatingData['create_time']"
               :nameGroups="evaluatingData.nameGroups"
+              :stem="evaluatingData.stem"
               :isPreview="isPreview">
           </ChoiceQuestionsForm>
         </div>

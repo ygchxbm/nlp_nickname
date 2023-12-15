@@ -5,7 +5,7 @@ import {ElMessage} from "element-plus";
 const router = useRouter()
 
 const props = defineProps({
-  id: Number || String,
+  id: Number | String,
   type: Number
 })
 

@@ -13,6 +13,7 @@ const props = defineProps({
   title: String,
   time: String,
   nameGroups: Object,
+  stem:String,
   isPreview: Boolean
 })
 
@@ -87,7 +88,7 @@ function getLongTest(str) {
         <div class="eFFCq-title">{{ title }}</div>
         <div class="eFFCq-time">{{ time }}</div>
         <div class="eFFCq-tips-commit">
-          <div class="eFFCq-tips">请选出你认为是真实人名的那一组</div>
+          <div class="eFFCq-tips">{{stem}}</div>
           <el-button v-if="!isPreview" class="eFFCq-commit" type="primary" @click="submitQuestionnaire">提交答案</el-button>
         </div>
       </div>

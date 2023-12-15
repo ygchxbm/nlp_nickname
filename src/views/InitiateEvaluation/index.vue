@@ -3,6 +3,7 @@ import {ref, reactive, computed, onMounted} from 'vue';
 import {Upload} from '@element-plus/icons-vue';
 import {useRouter, useRoute} from 'vue-router';
 import {createList, getSetting} from "@/api";
+import {ElLoading} from 'element-plus'
 
 const router = useRouter()
 const route = useRoute()
@@ -13,7 +14,8 @@ let questionTypes = [
       {label: 1, value: '判断题'},
       {label: 2, value: '长文本对比'}
     ],
-    oneGroupNameNums = ['1', '2', '3', '4', '5']
+    oneGroupNameNums = [1, 2, 3, 4, 5]
+
 const form = reactive({
   title: '',
   language: '中文',
@@ -22,7 +24,8 @@ const form = reactive({
   questionType: 0,
   oneGroupNameNum: 5,
   questionNum: 40,
-  referenceNames: []
+  referenceNames: [],
+  stem: ''
 })
 
 const settingsObj = ref({});
@@ -34,6 +37,8 @@ let nameGroups = ref([]);
 
 let selectedObj = ref({});
 
+const fullscreenLoading = ref(false)
+
 const nowFormatDate = computed(() => {
   let date = new Date(),
       year = date.getFullYear(), //获取完整的年份(4位)
@@ -43,18 +48,19 @@ const nowFormatDate = computed(() => {
   if (strDate < 10) strDate = `0${strDate}` // 如果日是个位数，在前面补0
   return `${year}-${month}-${strDate}`
 })
-const projects=ref([]);
+const projects = ref([]);
 const languages = computed(() => {
-  const languages=settingsObj.value[form.project]?.language||[];
-  form.language=languages[0]||'';
+  const languages = settingsObj.value[form.project]?.language || [];
+  form.language = languages[0] || '';
   return languages;
 })
 
 const nameStyles = computed(() => {
-  const styles=settingsObj.value[form.project]?.style||[];
-  form.style=styles[0]||'';
+  const styles = settingsObj.value[form.project]?.style || [];
+  form.style = styles[0] || '';
   return styles;
 })
+
 
 onMounted(() => {
   getSetting().then(res => {
@@ -67,8 +73,8 @@ onMounted(() => {
           style
         }
       }
-      projects.value=Reflect.ownKeys(settingsObj.value)||[]
-      form.project= projects.value[0];
+      projects.value = Reflect.ownKeys(settingsObj.value) || []
+      form.project = projects.value[0];
     }
   })
 })
@@ -84,6 +90,7 @@ function onlyNumber() {
 }
 
 function onSubmit() {
+  fullscreenLoading.value = true
   createList({
     title: form.title || "默认标题",
     language: form.language,
@@ -92,7 +99,8 @@ function onSubmit() {
     question_type: form.questionType,
     qst_group_num: form.oneGroupNameNum,
     qst_total_num: form.questionNum,
-    real_nicknames: form.referenceNames
+    real_nicknames: form.referenceNames,
+    stem: form.stem || (form.questionType === 1 ? '请判断下面每组人名是否是真实人名' : '请选出你认为是真实人名的那一组')
   }).then(res => {
     const previewPathNameMap = {
       0: "previewChoiceQuestions",
@@ -100,12 +108,13 @@ function onSubmit() {
       2: "previewLongTextQuestions"
     }
     const previewPathName = Reflect.get(previewPathNameMap, form.questionType);
-    router.push({
-      name: previewPathName,
-      state: {
-        id: res,
-      }
-    })
+  fullscreenLoading.value = false
+  router.push({
+    name: previewPathName,
+    state: {
+      id: res,
+    }
+  })
   })
 }
 
@@ -136,6 +145,17 @@ function questionTypeChange(type) {
   } else if (type === "选择题") {
     form.oneGroupNameNum = 5;
   }
+}
+
+const openFullScreen2 = () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  setTimeout(() => {
+    loading.close()
+  }, 2000)
 }
 
 </script>
@@ -182,6 +202,9 @@ function questionTypeChange(type) {
             <!--            <el-input :formatter="onlyNumber" v-model="form.questionNum"/>-->
             <el-input @blur="onlyNumber" v-model="form.questionNum"/>
           </el-form-item>
+          <el-form-item label="问题说明">
+            <el-input v-model="form.stem" placeholder="请输入评测问题"/>
+          </el-form-item>
           <div class="upload">
             <div class="upload-sets">
               <input class="upload-input" type="file" @change="openFile">
@@ -198,43 +221,11 @@ function questionTypeChange(type) {
             </div>
           </div>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">生成评测</el-button>
+            <el-button type="primary" @click="onSubmit" :disabled="fullscreenLoading" v-loading.lock="fullscreenLoading" element-loading-background="#adddea" element-loading-text="请稍等">生成评测</el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
-    <div v-else class="preview">
-      <div class="preview-title"><span>预览状态</span></div>
-      <div class="preview-main">
-        <div class="preview-content">
-          <div class="header">
-            <div class="title">{{ form.title }}</div>
-            <div class="time">{{ nowFormatDate }}</div>
-          </div>
-          <div class="main">
-            <div class="content">
-              <div class="tips">请选出你认为是真实人名的那一组</div>
-              <ul class="options">
-                <li v-for="(group,groupIndex) in nameGroups">
-                  <ul>
-                    <li class="option-base" v-for="(option,name,optionIndex) in group"
-                        :class="{'option':!(groupIndex in selectedObj&&selectedObj[groupIndex]===name)}">
-                      <div class="option-label">{{ ["A", "b"][optionIndex] }}</div>
-                      <div class="option-content">{{ option.names.join(' , ') }}</div>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="btnS">
-          <el-button plain>上一步</el-button>
-          <el-button class="shareBtn" type="primary">分享评测</el-button>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 <style lang="scss" scoped>
@@ -271,6 +262,22 @@ function questionTypeChange(type) {
         flex-direction: column;
         align-items: center;
 
+        :deep(.el-loading-spinner){
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: -15px;
+
+          p{
+            margin-left: 15px;
+          }
+        }
+
+        :deep(.el-loading-spinner svg.circular) {
+          width: 30px;
+          height: 30px;
+        }
+
         .el-form-item {
           margin-bottom: 24px;
           display: flex;
@@ -305,16 +312,20 @@ function questionTypeChange(type) {
             font-weight: 400;
           }
 
+          :deep(.el-input__wrapper):hover {
+            box-shadow: 0 0 0 1px #7BC1CFFF;
+          }
+
+          :deep(.el-input__wrapper.is-focus) {
+            box-shadow: 0 0 0 2px #00A9CEFF !important;
+          }
+
           .el-input {
             width: 330px;
             height: 32px;
 
             :deep(.el-input__wrapper) {
               padding: 5px 12px 5px 8px;
-            }
-
-            :deep(.el-input__wrapper):hover {
-              box-shadow: 0 0 0 1px #7BC1CFFF;
             }
 
             :deep(.el-input__wrapper.is-focus) {
@@ -342,8 +353,8 @@ function questionTypeChange(type) {
             background: #00A9CEFF;
           }
 
-          .el-button {
-            background: #00B2D9;
+          .el-button:hover {
+            background: #00B2D9FF;
           }
 
         }

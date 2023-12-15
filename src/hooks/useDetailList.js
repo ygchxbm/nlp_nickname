@@ -9,11 +9,12 @@ export function useDetailList() {
     const evaluatingData = ref({})
     onMounted(() => {
         getDetailList(id).then(res => {
-            let {ai_nicknames, real_nicknames,qst_group_num, qst_total_num, question_type} = res;
+            let {ai_nicknames, real_nicknames,qst_group_num, qst_total_num, question_type,stem} = res;
             evaluatingData.value = res;
             evaluatingData.value.ai_nicknames = ai_nicknames;
             evaluatingData.value.real_nicknames = real_nicknames;
             evaluatingData.value.nameGroups = getGroupNames(real_nicknames, ai_nicknames, qst_group_num, qst_total_num, question_type);
+            evaluatingData.value.stem=stem;
         })
     })
     return evaluatingData

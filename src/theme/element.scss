@@ -283,3 +283,8 @@
 		overflow: auto;
 	}
 }
+
+//select选择器的弹窗内选项的文字颜色
+.el-select-dropdown__item.selected{
+	color: #4cb1d9;
+}

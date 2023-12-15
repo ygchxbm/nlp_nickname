@@ -29,6 +29,7 @@ function selectedOption(val) {
               :title="evaluatingData.title"
               :time="evaluatingData['create_time']"
               :nameGroups="evaluatingData.nameGroups"
+              :stem="evaluatingData.stem"
               :isPreview="isPreview"
               @selectedOption="selectedOption">
           </LongTextQuestionsForm>
